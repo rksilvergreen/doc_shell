@@ -1,0 +1,12 @@
+---
+/**
+ * TD — thin wrapper around <td> for consistent MDX component usage.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<doc-td class={className || undefined}><slot /></doc-td>

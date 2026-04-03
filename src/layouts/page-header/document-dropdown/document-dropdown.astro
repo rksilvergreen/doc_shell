@@ -1,0 +1,68 @@
+---
+/**
+ * DocumentDropdown — a custom dropdown in the page header that lists all
+ * documents.  The trigger button shows the current document title (or the
+ * site title on the home page).  Clicking opens a floating menu of links;
+ * selecting one navigates to that document.
+ *
+ * Props:
+ *   collection  – full list of document entries
+ *   currentSlug – slug of the active document (omit on home page)
+ */
+import "./document-dropdown.css";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  collection: CollectionEntry<"documents">[];
+  entry?: CollectionEntry<"documents">;
+  class?: string;
+}
+
+const { collection, entry, class: className } = Astro.props;
+const SITE_TITLE_FALLBACK = "Documents";
+const label = entry ? entry.data.title : SITE_TITLE_FALLBACK;
+---
+
+<div class:list={["doc-dropdown", className]} id="doc-dropdown">
+  <button
+    type="button"
+    class="doc-dropdown-trigger"
+    id="doc-dropdown-trigger"
+    aria-haspopup="true"
+    aria-expanded="false"
+    data-site-title={SITE_TITLE_FALLBACK}
+  >
+    <span class="doc-dropdown-label">{label}</span>
+    <svg
+      class="doc-dropdown-chevron"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+  <ul class="doc-dropdown-menu" id="doc-dropdown-menu" role="menu">
+    {
+      collection.map((entry) => (
+        <li role="none">
+          <a
+            role="menuitem"
+            href={`/${entry.slug}/`}
+            class:list={[{ "is-active": entry }]}
+            data-slug={entry.slug}
+          >
+            {entry.data.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script src="./document-dropdown.ts"></script>

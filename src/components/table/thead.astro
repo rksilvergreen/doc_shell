@@ -1,0 +1,12 @@
+---
+/**
+ * THead — thin wrapper around <thead> for consistent MDX component usage.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<doc-thead class={className || undefined}><slot /></doc-thead>

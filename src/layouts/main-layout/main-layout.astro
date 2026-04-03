@@ -1,0 +1,70 @@
+---
+/**
+ * MainLayout — the shared HTML shell used by every page in a doc-shell site.
+ *
+ * Provides the `<!doctype>`, `<html>`, `<head>` (meta, fonts, View Transitions,
+ * pre-paint localStorage restoration), and `<body>` with a persistent PageHeader.
+ *
+ * Consuming layouts (DocLayout, HomePage) render as thin wrappers that slot
+ * their specific content into MainLayout.
+ *
+ * Props:
+ *   title       – page `<title>` text
+ *   collection  – all document entries (passed to PageHeader for the dropdown)
+ *   currentSlug – active document slug (omit on the home page)
+ *   buttons     – which PageHeader buttons to show (all visible by default)
+ *
+ * Slots:
+ *   (default) – body content rendered after PageHeader
+ */
+import { ViewTransitions } from "astro:transitions";
+import "doc-shell/styles/document.css";
+import PageHeader from "doc-shell/layouts/page-header/page-header.astro";
+import type { HeaderButtons } from "doc-shell/layouts/page-header/page-header.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  title: string;
+  collection: CollectionEntry<"documents">[];
+  entry?: CollectionEntry<"documents">;
+  buttons?: HeaderButtons;
+}
+
+const { title, collection, entry, buttons } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <ViewTransitions />
+    <script is:inline>
+      (function () {
+        var t = localStorage.getItem("doc-shell-theme");
+        if (t === "light")
+          document.documentElement.setAttribute("data-theme", "light");
+        if (localStorage.getItem("doc-shell-heading-numbers") !== "off")
+          document.documentElement.classList.add("heading-nums-on");
+        if (localStorage.getItem("doc-shell-sticky-headers") !== "off")
+          document.documentElement.classList.add("sticky-on");
+      })();
+    </script>
+  </head>
+  <body>
+    <PageHeader
+      collection={collection}
+      entry={entry}
+      buttons={buttons}
+    />
+    <slot />
+    <script src="./theme.ts"></script>
+  </body>
+</html>

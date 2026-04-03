@@ -1,0 +1,23 @@
+{
+  "name": "doc-shell",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build --prefix example",
+    "dev": "npm run dev --prefix example",
+    "preview": "npm run preview --prefix example"
+  },
+  "exports": {
+    "./layouts/*": "./src/layouts/*",
+    "./components/*": "./src/components/*",
+    "./plugins/*": "./src/plugins/*",
+    "./styles/*": "./src/styles/*",
+    "./utils/*": "./src/utils/*"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "astro": "^5.18.0"
+  }
+}

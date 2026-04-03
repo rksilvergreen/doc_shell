@@ -1,0 +1,12 @@
+---
+/**
+ * TH — thin wrapper around <th> for consistent MDX component usage.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<doc-th class={className || undefined}><slot /></doc-th>

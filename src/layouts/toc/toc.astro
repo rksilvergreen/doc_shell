@@ -1,0 +1,88 @@
+---
+/**
+ * TOC — renders the sidebar table-of-contents as a flat list of links.
+ *
+ * Receives a nested TocEntry[] tree and flattens it into a single <ul>.
+ * Each link carries a `data-depth` attribute (0-based nesting level) used
+ * by the CSS to vary font-size/weight and by toc-active.ts to track the
+ * active section on scroll.
+ *
+ * The section number comes from `entry.num` (set by the remark plugin).
+ * Top-level entries (depth 0) display a trailing dot (e.g. "4."),
+ * deeper entries display the number as-is (e.g. "4.1.1").
+ */
+import "./toc.css";
+
+/**
+ * A single entry in the table of contents sidebar.
+ *
+ * `text` is the plain section title (e.g. "Task Fields").
+ * `num` is the computed hierarchical section number (e.g. "4.1.1"),
+ * auto-injected by the remark-section-level plugin.
+ * Nesting is expressed via `children`; the renderer flattens the tree
+ * into indented links.
+ */
+export interface TocEntry {
+  id: string;
+  text: string;
+  num?: string;
+  children?: TocEntry[];
+}
+
+interface Props {
+  entries: TocEntry[];
+  class?: string;
+}
+
+interface FlatEntry {
+  id: string;
+  num: string;
+  name: string;
+  depth: number;
+}
+
+/** Recursively flatten the nested TocEntry tree into a depth-tagged list. */
+function flatten(entries: TocEntry[], depth: number = 0): FlatEntry[] {
+  const result: FlatEntry[] = [];
+  for (const entry of entries) {
+    const raw = entry.num ?? "";
+    const num = raw
+      ? (depth === 0 && !raw.includes(".") ? `${raw}.` : raw)
+      : "";
+    result.push({
+      id: entry.id,
+      num,
+      name: entry.text,
+      depth,
+    });
+    if (entry.children) {
+      result.push(...flatten(entry.children, depth + 1));
+    }
+  }
+  return result;
+}
+
+const { entries, class: className } = Astro.props;
+const flat = flatten(entries);
+---
+
+<ul class:list={["doc-toc-list", className]}>
+  {
+    flat.map((entry) => (
+      <li>
+        <a href={`#${entry.id}`} class="doc-link" data-depth={entry.depth}>
+          <span class="toc-num">{entry.num}</span>
+          <span
+            class="toc-name"
+            style={`padding-left: ${entry.depth * 0.5}rem`}
+          >
+            {entry.name}
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<script src="./toc-resize.ts"></script>
+<script src="./toc-active.ts"></script>

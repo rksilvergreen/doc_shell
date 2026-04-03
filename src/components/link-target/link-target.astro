@@ -1,0 +1,31 @@
+---
+/**
+ * LinkTarget — marks content as linkable and previewable.
+ *
+ * Renders an element with a stable `id` and the `.doc-link-target` marker class.
+ * The unified preview system (link-preview.ts) clones the element's content
+ * when any .doc-link targets this id.
+ *
+ * The `as` prop controls the wrapper element tag (default "div").
+ * Specialised components pass their own tag: Section uses "section",
+ * TR uses "tr".
+ */
+import "./link-preview.css";
+
+interface Props {
+  id: string;
+  /** HTML element to render. @default "div" */
+  as?: string;
+  class?: string;
+}
+
+const { id, as = "div", class: cls } = Astro.props;
+const Element = as as any;
+const classes = ["doc-link-target", cls].filter(Boolean).join(" ");
+---
+
+<Element class={classes} id={id}>
+  <slot />
+</Element>
+
+<script src="./link-preview.ts"></script>

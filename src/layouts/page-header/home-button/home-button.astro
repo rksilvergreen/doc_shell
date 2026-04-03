@@ -1,0 +1,45 @@
+---
+/**
+ * HomeButton — house-icon link that navigates back to the home page.
+ *
+ * Also loads `home-button-sync.ts` which keeps the PageHeader's
+ * `data-show-*` attributes in sync after View Transition navigations.
+ *
+ * Props:
+ *   href  – target URL (default "/")
+ */
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const {
+  href = "/",
+  class: className,
+} = Astro.props as Props;
+---
+
+<a
+  class:list={["doc-nav-btn", "doc-home-btn", className]}
+  href={href}
+  title="Home"
+  aria-label="Home"
+>
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M3 12l9-9 9 9"></path>
+    <path
+      d="M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10"
+    ></path>
+  </svg>
+</a>
+
+<script src="./home-button-sync.ts"></script>

@@ -1,0 +1,61 @@
+/*
+ * nav-buttons.css — styles for header navigation buttons.
+ *
+ * .doc-nav-buttons   – flex container for back/forward buttons
+ * .doc-nav-btn       – shared style for all nav-control buttons
+ *                      (back, forward, home, theme toggle)
+ * .doc-scroll-counter – scroll position indicator
+ */
+
+.doc-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  /* Align nav buttons with TOC link text start:
+     toc-inner padding-left (1.25rem) +
+     toc link border-left (3px) +
+     toc link padding-left (1rem) */
+  margin-left: calc(1rem + 3px);
+}
+
+/* Shared style for all nav-control buttons (back, forward, theme) */
+.doc-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  padding: 0;
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--doc-highlight);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+/* Hover: tinted background, accent border */
+.doc-nav-btn:hover:not(:disabled) {
+  background: var(--doc-tint);
+  border-color: var(--doc-highlight);
+}
+
+/* Disabled state (e.g. back button at start of history) */
+.doc-nav-btn:disabled {
+  color: var(--doc-border);
+  cursor: default;
+  border-color: var(--doc-border);
+}
+
+/* Scroll position counter: content scroll Y in pixels (not TOC) */
+.doc-scroll-counter {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+  color: var(--doc-ink-light);
+  min-width: 2.5ch;
+  text-align: right;
+}

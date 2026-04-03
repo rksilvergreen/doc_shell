@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import DocLayout from "doc-shell/layouts/doc-layout.astro";
+import "doc-shell/components/table/table.css";
+import { documents } from "../content/documents";
+
+export function getStaticPaths() {
+  return documents.map((d) => ({
+    params: { doc: d.slug },
+    props: { document: d },
+  }));
+}
+
+const { document } = Astro.props;
+const sections = await getCollection("documents");
+const docSections = sections
+  .filter((s) => s.id.startsWith(document.slug + "/"))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const renderedSections = await Promise.all(
+  docSections.map(async (section) => {
+    const { Content } = await section.render();
+    return { id: section.id, Content };
+  }),
+);
+---
+
+<DocLayout
+  documents={documents}
+  slug={document.slug}
+>
+  {renderedSections.map(({ Content }) => <Content />)}
+</DocLayout>

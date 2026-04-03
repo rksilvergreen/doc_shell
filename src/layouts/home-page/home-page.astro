@@ -1,0 +1,48 @@
+---
+/**
+ * HomePage — content for the landing page document card grid.
+ *
+ * Props:
+ *   title      – site-level title (used in the page heading)
+ *   collection – document entries used to render the card grid
+ */
+import type { CollectionEntry } from "astro:content";
+import "./home-page.css";
+
+interface Props {
+  title: string;
+  collection: CollectionEntry<"documents">[];
+}
+
+const { title, collection } = Astro.props;
+---
+
+<div class="doc-home-content">
+  <h1 class="doc-home-title">{title}</h1>
+  <div class="doc-home-grid">
+    {
+      collection.map((entry) => (
+        <a class="doc-home-card" href={`/${entry.slug}/`}>
+          <span class="doc-home-card-title">{entry.data.title}</span>
+          {entry.data.description && (
+            <span class="doc-home-card-desc">{entry.data.description}</span>
+          )}
+          <svg
+            class="doc-home-card-arrow"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
+      ))
+    }
+  </div>
+</div>

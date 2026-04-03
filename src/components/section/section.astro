@@ -1,0 +1,38 @@
+---
+/**
+ * Section — a container that wraps a heading and its content.
+ *
+ * Internally uses LinkTarget (as="section") so every section is
+ * automatically linkable and previewable by the unified preview system.
+ *
+ * The `_level` and `_num` props are auto-injected at build time by the
+ * remark-section-level plugin based on Section nesting in the MDX source.
+ * Authors never write them.
+ *
+ * The `id` + `title` pairs feed the TOC tree that the same plugin
+ * attaches to the file's remarkPluginFrontmatter.
+ */
+import LinkTarget from "../link-target/link-target.astro";
+
+interface Props {
+  id: string;
+  title: string;
+  class?: string;
+  /** Auto-injected by remark-section-level. Do not set manually. */
+  _level?: string | number;
+  /** Auto-injected by remark-section-level. Do not set manually. */
+  _num?: string;
+}
+
+const { id, title, _level, _num, class: className } = Astro.props;
+const level = Math.min(Math.max(Number(_level) || 1, 1), 6);
+const Tag = `h${level}` as any;
+const displayNum = _num
+  ? (_num.includes(".") ? _num : `${_num}.`)
+  : undefined;
+---
+
+<LinkTarget id={id} as="section" class:list={["doc-section", className]}>
+  <Tag class="section-heading">{displayNum && <span class="heading-num">{displayNum} </span>}{title}</Tag>
+  <slot />
+</LinkTarget>

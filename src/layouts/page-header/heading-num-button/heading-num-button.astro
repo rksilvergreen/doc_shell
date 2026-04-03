@@ -1,0 +1,46 @@
+---
+/**
+ * HeadingNumButton — toolbar button that toggles section heading numbers
+ * on or off.
+ *
+ * Click handling and `aria-pressed` sync live in the co-located
+ * `heading-num-button.ts`.  The core heading-numbers logic lives in
+ * `doc-layout/heading-numbers.ts`.
+ */
+import "./heading-num-button.css";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<button
+  type="button"
+  class:list={["doc-header-toggle doc-heading-num-toggle", className]}
+  aria-pressed="true"
+  title="Toggle heading numbers"
+  aria-label="Toggle heading numbers on or off"
+>
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="10" y1="6" x2="21" y2="6"></line>
+    <line x1="10" y1="12" x2="21" y2="12"></line>
+    <line x1="10" y1="18" x2="21" y2="18"></line>
+    <path d="M4 6h1v4"></path>
+    <path d="M4 10h2"></path>
+    <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path>
+  </svg>
+</button>
+
+<script src="./heading-num-button.ts"></script>

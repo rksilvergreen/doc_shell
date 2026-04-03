@@ -1,0 +1,477 @@
+/*
+ * doc-layout.css — styles for the DocLayout shell.
+ *
+ * TOC sidebar container, main content area, document typography,
+ * sticky headings, rules, tree view, links, highlights, tooltips,
+ * and utilities.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOC sidebar — fixed panel with resizable width
+   ═══════════════════════════════════════════════════════════════════════════
+   Width is controlled by --doc-toc-width (default 280px, updated by
+   toc-resize.ts).  The resize handle (.doc-toc-resize) is a 6 px invisible
+   strip on the right edge; on hover it shows a 2 px highlight bar.
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* Flex container: sidebar + main content side by side;
+   padding-top clears the fixed page header */
+.doc-layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: var(--doc-header-height);
+}
+
+/* Fixed sidebar panel; top sits directly below the page header */
+.doc-toc {
+  position: fixed;
+  left: 0;
+  top: var(--doc-header-height);
+  bottom: 0;
+  width: var(--doc-toc-width, 280px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--doc-border);
+  background: var(--doc-toc-bg);
+  z-index: 10000;
+}
+
+/* Invisible drag handle on the right edge of the TOC (6 px wide) */
+.doc-toc-resize {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  bottom: 0;
+  cursor: col-resize;
+  z-index: 10001;
+}
+
+/* Thin vertical line inside the handle — hidden by default */
+.doc-toc-resize::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: transparent;
+  transition: background 0.15s;
+}
+
+/* Show the accent bar on hover or during an active drag */
+.doc-toc-resize:hover::after,
+.doc-toc-resize.is-dragging::after {
+  background: var(--doc-highlight);
+}
+
+/* Scrollable area containing the TOC link list */
+.doc-toc-inner {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  padding: 0.5rem 0 2rem 1.25rem;
+  scrollbar-color: var(--doc-scrollbar-thumb) var(--doc-scrollbar-track);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Main content area
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* Main content area — offset by the TOC width, capped at 900 px */
+.doc-content {
+  margin-left: var(--doc-toc-width, 280px);
+  flex: 1;
+  max-width: 900px;
+  padding: 3rem 2.5rem;
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Document typography — section nesting & indentation
+   ═══════════════════════════════════════════════════════════════════════════
+   .document is the root content class.  Sections are nested <section> elements;
+   each child section gets one step of left margin, producing cumulative indent.
+   --section-depth is set by CSS nesting selectors (no client JS needed).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Depth variable set by nesting level */
+.document>.doc-section {
+  --section-depth: 0;
+}
+
+.document>.doc-section .doc-section {
+  --section-depth: 1;
+}
+
+.document>.doc-section .doc-section .doc-section {
+  --section-depth: 2;
+}
+
+.document>.doc-section .doc-section .doc-section .doc-section {
+  --section-depth: 3;
+}
+
+.document>.doc-section .doc-section .doc-section .doc-section .doc-section {
+  --section-depth: 4;
+}
+
+.document>.doc-section .doc-section .doc-section .doc-section .doc-section .doc-section {
+  --section-depth: 5;
+}
+
+/* Each nested section indents one step relative to its parent */
+.doc-section>.doc-section {
+  margin-left: var(--heading-indent-step);
+}
+
+/* Extra top margin between top-level sections (except the first) */
+.document>.doc-section+.doc-section {
+  margin-top: 2.75rem;
+}
+
+/* Sections as scroll targets need to clear the fixed page header */
+.document .doc-section {
+  scroll-margin-top: var(--doc-header-height);
+}
+
+/* Headings use a serif font family and a bottom box-shadow separator line.
+   Base scroll-margin-top clears the fixed page header on hash navigation
+   (cross-document links, address-bar entry, page reload with #hash).
+   The .sticky-on rules further down override with larger values. */
+.document h1,
+.document h2,
+.document h3,
+.document h4,
+.document h5,
+.document h6 {
+  font-family: serif, Georgia, serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--doc-ink);
+  text-transform: none;
+  position: relative;
+  background: var(--doc-cream);
+  box-shadow: 0 1px 0 var(--doc-border);
+  scroll-margin-top: var(--doc-header-height);
+}
+
+/* Link targets need to clear the fixed page header on browser-native hash nav */
+.document .doc-link-target {
+  scroll-margin-top: var(--doc-header-height);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Sticky headings
+   ═══════════════════════════════════════════════════════════════════════════
+   When sticky mode is on, headings in the active chain get .sticky-active
+   which makes them position:sticky at the slot for their level (--sticky-hN).
+   ::after and ::before pseudo-elements extend the heading background to the
+   full width so content doesn't show through gaps.
+   .heading-incoming marks headings about to scroll into a sticky slot —
+   given a higher z-index so they slide over the outgoing heading.
+   scroll-margin-top on .sticky-on ensures browser-native scroll-to-anchor
+   clears the sticky stack.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.document h1.heading-incoming,
+.document h2.heading-incoming,
+.document h3.heading-incoming,
+.document h4.heading-incoming,
+.document h5.heading-incoming,
+.document h6.heading-incoming {
+  z-index: 17;
+}
+
+/* Departing headings keep position:sticky to avoid layout jumps but are
+   visually hidden so they don't peek out behind the incoming header. */
+.document h1.sticky-departing,
+.document h2.sticky-departing,
+.document h3.sticky-departing,
+.document h4.sticky-departing,
+.document h5.sticky-departing,
+.document h6.sticky-departing {
+  visibility: hidden;
+}
+
+/* Headings in the active sticky chain become position:sticky */
+.document h1.sticky-active,
+.document h2.sticky-active,
+.document h3.sticky-active,
+.document h4.sticky-active,
+.document h5.sticky-active,
+.document h6.sticky-active {
+  position: sticky;
+}
+
+/* ::after extends the heading's background to the right edge of the viewport
+   so document content beneath doesn't bleed through the gap */
+.document h1.sticky-active::after,
+.document h2.sticky-active::after,
+.document h3.sticky-active::after,
+.document h4.sticky-active::after,
+.document h5.sticky-active::after,
+.document h6.sticky-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100vw;
+  height: 100%;
+  background: var(--doc-cream);
+  pointer-events: none;
+}
+
+/* ::before extends the heading's background to the left edge (covering the
+   indentation gap from section nesting). Top-level headings have no indent. */
+.document .section-heading.sticky-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: calc(var(--section-depth, 0) * var(--heading-indent-step));
+  height: 100%;
+  background: var(--doc-cream);
+  pointer-events: none;
+}
+
+/* Per-level sticky slot positions and z-ordering (H1 on top, H6 lowest) */
+.document h1.sticky-active {
+  top: var(--sticky-h1);
+  z-index: 16;
+}
+
+.document h2.sticky-active {
+  top: var(--sticky-h2);
+  z-index: 15;
+}
+
+.document h3.sticky-active {
+  top: var(--sticky-h3);
+  z-index: 14;
+}
+
+.document h4.sticky-active {
+  top: var(--sticky-h4);
+  z-index: 13;
+}
+
+.document h5.sticky-active {
+  top: var(--sticky-h5);
+  z-index: 12;
+}
+
+.document h6.sticky-active {
+  top: var(--sticky-h6);
+  z-index: 11;
+}
+
+/* scroll-margin-top ensures browser-native anchor jumps (e.g. from address
+   bar) clear the sticky heading stack when sticky mode is on.
+   Section ids live on <section> elements; depth maps to heading level. */
+.sticky-on .document>.doc-section {
+  scroll-margin-top: var(--sticky-h1);
+}
+
+.sticky-on .document>.doc-section>.doc-section {
+  scroll-margin-top: var(--sticky-h2);
+}
+
+.sticky-on .document>.doc-section>.doc-section>.doc-section {
+  scroll-margin-top: var(--sticky-h3);
+}
+
+.sticky-on .document>.doc-section>.doc-section>.doc-section>.doc-section {
+  scroll-margin-top: var(--sticky-h4);
+}
+
+.sticky-on .document>.doc-section>.doc-section>.doc-section>.doc-section>.doc-section {
+  scroll-margin-top: var(--sticky-h5);
+}
+
+.sticky-on .document>.doc-section>.doc-section>.doc-section>.doc-section>.doc-section>.doc-section {
+  scroll-margin-top: var(--sticky-h6);
+}
+
+/* Heading number spans — hidden by default, shown when toggle is on */
+.heading-num {
+  display: none;
+}
+
+.heading-nums-on .document .heading-num {
+  display: inline;
+}
+
+/* H1 sizing — largest heading with a bottom border rule */
+.document h1 {
+  font-size: 2.75rem;
+  margin-bottom: 1.35rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--doc-border);
+  margin-top: 0;
+}
+
+/* H2 sizing */
+.document h2 {
+  font-size: 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.85rem;
+  padding: 0.7rem 0;
+}
+
+/* H3 sizing */
+.document h3 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.7rem;
+  padding: 0.65rem 0;
+}
+
+/* H4–H6 share the same font size; only spacing differs */
+.document h4,
+.document h5,
+.document h6 {
+  font-size: 1.2rem;
+}
+
+/* H4 spacing */
+.document h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.55rem 0;
+}
+
+/* H5 spacing */
+.document h5 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+  padding: 0.55rem 0;
+}
+
+/* H6 spacing */
+.document h6 {
+  margin-top: 1rem;
+  margin-bottom: 0.35rem;
+  padding: 0.55rem 0;
+}
+
+/* Paragraphs: secondary text colour with bottom margin */
+.document p {
+  margin-bottom: 1rem;
+  color: var(--doc-ink-light);
+}
+
+/* Unordered and ordered lists share base spacing */
+.document ul,
+.document ol {
+  list-style: none;
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+/* List items: left-padded to make room for the ::before dot bullet */
+.document ul li,
+.document ol li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: var(--doc-ink-light);
+}
+
+/* Custom bullet: small accent-coloured circle positioned absolutely */
+.document ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  background: var(--doc-accent);
+  border-radius: 50%;
+}
+
+/* Nested lists: indented with a left border line */
+.document ul ul {
+  margin-left: 1.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--doc-border);
+}
+
+/* Nested bullets: smaller and muted (border colour instead of accent) */
+.document ul ul li::before {
+  background: var(--doc-border);
+  width: 4px;
+  height: 4px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Highlight animations — transient colour flash on navigation jumps
+   ═══════════════════════════════════════════════════════════════════════════ */
+/* Heading flash: warm accent fading to page background over 1.8 s */
+@keyframes heading-highlight-fade {
+  from {
+    background: rgba(232, 180, 168, 0.45);
+  }
+
+  to {
+    background: var(--doc-cream);
+  }
+}
+
+/* Applied to headings by navigation.ts after an anchor jump */
+.document .heading-highlight {
+  animation: heading-highlight-fade 1.8s ease-out forwards;
+}
+
+/* Table rows: target-highlight on <doc-tr> animates its <doc-td> cells */
+.document doc-table doc-tbody doc-tr.target-highlight>doc-td {
+  animation: target-highlight-fade 2s ease-out forwards;
+}
+
+/* Bold text: promoted to primary ink colour */
+.document strong {
+  color: var(--doc-ink);
+  font-weight: 600;
+}
+
+/* Italic text: also promoted to primary ink colour */
+.document em {
+  font-style: italic;
+  color: var(--doc-ink);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Utilities
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Generic target flash: warm accent fading to transparent over 2 s */
+@keyframes target-highlight-fade {
+  from {
+    background-color: rgba(232, 180, 168, 0.6);
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+
+/* Applied to any link target by navigation.ts after anchor jump */
+.document .target-highlight {
+  animation: target-highlight-fade 2s ease-out forwards;
+  border-radius: 4px;
+}
+
+/* .doc-footer — centered, muted footer line at the bottom of the page */
+.document footer,
+.doc-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--doc-border);
+  font-size: 0.85rem;
+  color: #888;
+  text-align: center;
+}

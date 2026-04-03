@@ -1,0 +1,67 @@
+---
+/**
+ * DocLayout — document-specific content shell for a single document view.
+ *
+ * Renders the TOC sidebar, content area, and footer.
+ * Doc-specific client scripts (sticky-headers, heading-numbers, navigation)
+ * are loaded here.
+ *
+ * Props:
+ *   entry      – the content collection entry to render
+ *   components – additional MDX components to merge with the built-in set
+ *
+ * Slots:
+ *   head – injected at the end of <head> (extra styles, meta, etc.)
+ */
+import "doc-shell/components/table/table.css";
+import "./doc-layout.css";
+import TOC from "doc-shell/layouts/toc/toc.astro";
+import Section from "doc-shell/components/section/section.astro";
+import LinkTarget from "doc-shell/components/link-target/link-target.astro";
+import Link from "doc-shell/components/link/link.astro";
+import Table from "doc-shell/components/table/table.astro";
+import THead from "doc-shell/components/table/thead.astro";
+import TBody from "doc-shell/components/table/tbody.astro";
+import TR from "doc-shell/components/table/tr.astro";
+import TH from "doc-shell/components/table/th.astro";
+import TD from "doc-shell/components/table/td.astro";
+import type { TocEntry } from "doc-shell/layouts/toc/toc.astro";
+
+interface Props {
+  entry: any;
+  components?: Record<string, any>;
+}
+
+const { entry, components = {} } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await entry.render();
+const tocEntries = (remarkPluginFrontmatter._toc ?? []) as TocEntry[];
+
+const builtInComponents = {
+  Section,
+  Link,
+  LinkTarget,
+  Table,
+  THead,
+  TBody,
+  TR,
+  TH,
+  TD,
+};
+const mergedComponents = { ...builtInComponents, ...components };
+---
+
+<div class="doc-layout">
+  <nav class="doc-toc" aria-label="Table of contents">
+    <div class="doc-toc-inner">
+      <TOC entries={tocEntries} />
+    </div>
+    <div class="doc-toc-resize" aria-hidden="true"></div>
+  </nav>
+  <main class="document doc-content">
+    <Content components={mergedComponents} />
+  </main>
+</div>
+
+<script src="./sticky-headers.ts"></script>
+<script src="./heading-numbers.ts"></script>
+<script src="./navigation.ts"></script>

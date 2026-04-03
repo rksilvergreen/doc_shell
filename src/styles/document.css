@@ -1,0 +1,154 @@
+/*
+ * document.css — global foundations for doc-shell (imported by MainLayout).
+ *
+ * Contains design tokens (dark/light palettes), CSS reset, print rules,
+ * body defaults, and view-transition keyframes.  Component and layout UI
+ * styles live in *.css next to their *.astro files and are loaded via
+ * side-effect imports there.  Table styles
+ * (`doc-shell/components/table/table.css`) must be imported by the app
+ * (e.g. the page that renders DocLayout) when using `.doc-table-wrap`.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. Design tokens
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --doc-header-height: calc(3.05rem + 5px);
+  --heading-indent-step: 1.25rem;
+  --sticky-h1: 0.75rem;
+  --sticky-h2: 6rem;
+  --sticky-h3: 10rem;
+  --sticky-h4: 13.25rem;
+  --sticky-h5: 16rem;
+  --sticky-h6: 18.75rem;
+
+  --doc-table-default: #2d5a4a;
+  --doc-accent: #c45c3e;
+  --doc-accent-muted: #e8b4a8;
+
+  /* Dark theme (default) */
+  --doc-ink: #dcd8d0;
+  --doc-ink-light: #9e9a92;
+  --doc-cream: #1a1b1f;
+  --doc-border: #35363d;
+  --doc-highlight: #5aaa8a;
+  --doc-scrollbar-track: #222228;
+  --doc-scrollbar-thumb: var(--doc-border);
+  --doc-surface: #222228;
+  --doc-toc-bg: #1e1f24;
+  --doc-tint-subtle: rgba(90, 170, 138, 0.06);
+  --doc-tint: rgba(90, 170, 138, 0.12);
+}
+
+/* Light theme overrides — activated by [data-theme="light"] on <html> */
+[data-theme="light"] {
+  --doc-ink: #1c1c1c;
+  --doc-ink-light: #4a4a4a;
+  --doc-cream: #faf8f5;
+  --doc-border: #d4d0ca;
+  --doc-highlight: #2d5a4a;
+  --doc-scrollbar-track: #f3eee7;
+  --doc-scrollbar-thumb: var(--doc-border);
+  --doc-surface: #fff;
+  --doc-toc-bg: #fcf8f1;
+  --doc-tint-subtle: rgba(45, 90, 74, 0.03);
+  --doc-tint: rgba(45, 90, 74, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. Reset & print styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Print: force light palette, hide interactive chrome, allow page breaks */
+@media print {
+  :root {
+    --doc-ink: #1c1c1c;
+    --doc-ink-light: #4a4a4a;
+    --doc-cream: #faf8f5;
+    --doc-border: #d4d0ca;
+    --doc-highlight: #2d5a4a;
+    --doc-scrollbar-track: #f3eee7;
+    --doc-surface: #fff;
+    --doc-toc-bg: #fcf8f1;
+    --doc-tint-subtle: rgba(45, 90, 74, 0.03);
+    --doc-tint: rgba(45, 90, 74, 0.06);
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .doc-page-header {
+    display: none;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .doc-toc {
+    display: none;
+  }
+
+  .doc-content {
+    margin-left: 0;
+  }
+
+  .document h1,
+  .document h2,
+  .document h3,
+  .document h4,
+  .document h5,
+  .document h6 {
+    position: static;
+    box-shadow: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. Page shell
+   ═══════════════════════════════════════════════════════════════════════════ */
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-size: 11pt;
+  line-height: 1.65;
+  color: var(--doc-ink);
+  background: var(--doc-cream);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   View Transitions
+   ═══════════════════════════════════════════════════════════════════════════ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
+}
+
+@keyframes doc-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes doc-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

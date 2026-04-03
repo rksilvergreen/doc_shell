@@ -1,0 +1,24 @@
+---
+/**
+ * Link — an anchor that targets a LinkTarget id with hover-preview support.
+ *
+ * The `to` prop accepts:
+ *   - A bare id        ("sec-2-1")          → href="#sec-2-1"
+ *   - A hash reference ("#sec-2-1")         → href="#sec-2-1"
+ *   - A full path      ("/ontology/#sec-2") → href="/ontology/#sec-2"
+ *
+ * The `.doc-link` class lets the unified preview system (link-preview.ts)
+ * identify these anchors for hover tooltips.
+ */
+import "./link.css";
+
+interface Props {
+  to: string;
+  class?: string;
+}
+
+const { to, class: className } = Astro.props;
+const href = to.includes("/") || to.startsWith("#") ? to : `#${to}`;
+---
+
+<a href={href} class:list={["doc-link", className]}><slot /></a>

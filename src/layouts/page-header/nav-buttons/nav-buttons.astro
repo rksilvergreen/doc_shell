@@ -1,0 +1,35 @@
+---
+/**
+ * NavButtons — back / forward scroll-position buttons in the page header.
+ *
+ * The back (#doc-nav-back) and forward (#doc-nav-fwd) buttons are wired
+ * by navigation.ts which maintains an in-page scroll-position stack.
+ */
+import "./nav-buttons.css";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<div class:list={["doc-nav-buttons", className]}>
+  <button
+    type="button"
+    class="doc-nav-btn"
+    id="doc-nav-back"
+    title="Navigate back"
+    aria-label="Navigate back"
+    disabled>&larr;</button
+  >
+  <button
+    type="button"
+    class="doc-nav-btn"
+    id="doc-nav-fwd"
+    title="Navigate forward"
+    aria-label="Navigate forward"
+    disabled>&rarr;</button
+  >
+</div>
+<script src="./nav-buttons.ts"></script>

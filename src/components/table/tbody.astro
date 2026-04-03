@@ -1,0 +1,12 @@
+---
+/**
+ * TBody — thin wrapper around <tbody> for consistent MDX component usage.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<doc-tbody class={className || undefined}><slot /></doc-tbody>

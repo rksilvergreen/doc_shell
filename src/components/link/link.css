@@ -1,0 +1,35 @@
+/*
+ * link.css — styles for the Link component (.doc-link) and general
+ * document anchor styling.
+ */
+
+/* Base link style: inherit font colour, no visited state change */
+.document a {
+  color: var(--doc-ink);
+  text-decoration: none;
+}
+
+/* Same-document # links become :visited; themed anchors need a matching
+   `.document a.<class>:visited` rule or this will override their accent color. */
+.document a:visited {
+  color: var(--doc-ink);
+}
+
+.document a:hover {
+  text-decoration: underline;
+}
+
+/* Internal links (Link component): accent colour */
+.document .doc-link:hover {
+  text-decoration: underline;
+}
+
+/* Plain links: styled like regular body text (escape hatch) */
+.document a.doc-link-plain {
+  color: var(--doc-ink);
+}
+
+.document a.doc-link-plain:hover {
+  color: var(--doc-ink);
+  text-decoration: underline;
+}

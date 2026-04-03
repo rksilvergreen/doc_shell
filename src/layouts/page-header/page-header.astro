@@ -1,0 +1,114 @@
+---
+/**
+ * PageHeader — the fixed toolbar at the top of every page.
+ *
+ * Shared by DocLayout and HomePage so that Astro View Transitions can
+ * persist it across navigations (transition:persist).
+ *
+ * Button visibility is controlled by the `buttons` prop (a HeaderButtons
+ * object).  When no prop is supplied every button defaults to visible.
+ * When a `buttons` object IS supplied, only keys set to `true` are shown.
+ * The chosen state is encoded as `data-show-*` attributes on the
+ * `<header>` element; CSS hides any button whose attribute is absent.
+ * A client-side sync script (home-button-sync.ts) updates these
+ * attributes after View Transition navigations so the persisted header
+ * stays correct.
+ *
+ * Layout (left → right):
+ *   Home button · Back / Forward · Document dropdown · … ·
+ *   Sticky headers · Heading numbers · Theme toggle
+ *
+ * Props:
+ *   collection  – all document entries (for the dropdown)
+ *   currentSlug – active document slug (omit on home page)
+ *   homeHref    – where the home button points (default "/")
+ *   buttons     – which header buttons to display
+ */
+import "./page-header.css";
+import NavButtons from "./nav-buttons/nav-buttons.astro";
+import HomeButton from "./home-button/home-button.astro";
+import StickyHeadersButton from "./sticky-headers-button/sticky-headers-button.astro";
+import HeadingNumButton from "./heading-num-button/heading-num-button.astro";
+import ThemeButton from "./theme-button/theme-button.astro";
+import DocumentDropdown from "./document-dropdown/document-dropdown.astro";
+import type { CollectionEntry } from "astro:content";
+
+/**
+ * Controls which buttons are visible in the PageHeader toolbar.
+ *
+ * When a `HeaderButtons` object is passed to PageHeader (via MainLayout),
+ * only the buttons whose keys are explicitly `true` are shown. Keys that
+ * are omitted or `false` hide the corresponding control.
+ *
+ * When no `buttons` prop is provided at all, every button defaults to visible.
+ */
+export interface HeaderButtons {
+  home?: boolean;
+  nav?: boolean;
+  dropdown?: boolean;
+  stickyHeaders?: boolean;
+  headingNumbers?: boolean;
+  theme?: boolean;
+}
+
+interface Props {
+  collection: CollectionEntry<"documents">[];
+  entry?: CollectionEntry<"documents">;
+  homeHref?: string;
+  buttons?: HeaderButtons;
+  class?: string;
+}
+
+const ALL_ON: Required<HeaderButtons> = {
+  home: true,
+  nav: true,
+  dropdown: true,
+  stickyHeaders: true,
+  headingNumbers: true,
+  theme: true,
+};
+
+const ALL_OFF: Required<HeaderButtons> = {
+  home: false,
+  nav: false,
+  dropdown: false,
+  stickyHeaders: false,
+  headingNumbers: false,
+  theme: false,
+};
+
+const {
+  collection,
+  entry,
+  homeHref = "/",
+  buttons,
+  class: className,
+} = Astro.props;
+
+const b = buttons ? { ...ALL_OFF, ...buttons } : ALL_ON;
+---
+
+<header
+  class:list={["doc-page-header", className]}
+  transition:persist="doc-header"
+  data-show-home={b.home || undefined}
+  data-show-nav={b.nav || undefined}
+  data-show-dropdown={b.dropdown || undefined}
+  data-show-sticky={b.stickyHeaders || undefined}
+  data-show-heading-num={b.headingNumbers || undefined}
+  data-show-theme={b.theme || undefined}
+>
+  <div class="doc-page-header-left">
+    <HomeButton href={homeHref} />
+    <NavButtons />
+    <DocumentDropdown
+      collection={collection}
+      entry={entry}
+    />
+  </div>
+  <div class="doc-page-header-right">
+    <StickyHeadersButton />
+    <HeadingNumButton />
+    <ThemeButton />
+  </div>
+</header>

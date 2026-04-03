@@ -1,0 +1,22 @@
+---
+/**
+ * Table — styled document table inside .doc-table-wrap.
+ *
+ * Drop-in replacement for the former DocTable component.
+ * Styles live in ./table.css.
+ */
+import "./table.css";
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id, class: tableClass = "" } = Astro.props;
+---
+
+<div class="doc-table-wrap">
+  <doc-table id={id} class={tableClass || undefined}>
+    <slot />
+  </doc-table>
+</div>

@@ -1,0 +1,135 @@
+/*
+ * link-preview.css — tooltip / preview card styles for the unified
+ * link-preview system (link-preview.ts).
+ */
+
+/* Floating row-preview card */
+.row-preview-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.13);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-size: 0.85rem;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s, visibility 0.12s;
+  max-width: min(860px, calc(100vw - 32px));
+  overflow-x: auto;
+}
+
+.row-preview-tooltip.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Full-screen dark overlay shown behind TOC-triggered previews */
+.section-preview-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s, visibility 0.12s;
+}
+
+.section-preview-backdrop.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Floating section/generic-preview card */
+.section-preview-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: var(--doc-cream);
+  border: 1px solid var(--doc-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.13);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s, visibility 0.12s;
+  max-width: min(1500px, calc(100vw - 32px));
+  max-height: 1020px;
+  overflow: hidden;
+}
+
+.section-preview-tooltip.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.section-preview-tooltip a {
+  pointer-events: none;
+}
+
+/* Document title bar for remote (cross-document) previews */
+.section-preview-tooltip .sec-preview-doc-title {
+  padding: 0.45rem 1.25rem;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--doc-ink-light);
+  background: var(--doc-surface);
+  border-bottom: 1px solid var(--doc-border);
+  border-radius: 6px 6px 0 0;
+  letter-spacing: 0.01em;
+}
+
+/* Inner wrapper: fixed width for section previews, scaled via --sec-preview-scale */
+.section-preview-tooltip .sec-preview-inner {
+  width: 720px;
+  padding: 1rem 1.25rem;
+  transform: scale(var(--sec-preview-scale, 0.65));
+  transform-origin: top left;
+}
+
+/* Generic / inline LinkTarget: shrink to content (section previews keep fixed column width) */
+.section-preview-tooltip .sec-preview-inner.sec-preview-inner--fit {
+  width: max-content;
+  max-width: min(720px, calc(100vw - 48px));
+  box-sizing: border-box;
+}
+
+.section-preview-tooltip .sec-preview-inner> :first-child {
+  margin-top: 0;
+}
+
+/* Override nesting indent inside previews — always flush left */
+.section-preview-tooltip .sec-preview-inner>* {
+  margin-left: 0 !important;
+}
+
+.section-preview-tooltip .sec-preview-inner .doc-section {
+  margin-left: 0 !important;
+}
+
+/* Neutralise sticky positioning inside preview tooltips
+   (main doc uses doc-thead; legacy native table still covered) */
+.section-preview-tooltip table thead,
+.row-preview-tooltip table thead,
+.section-preview-tooltip doc-table doc-thead,
+.row-preview-tooltip doc-table doc-thead {
+  position: static;
+  top: auto;
+  z-index: auto;
+}
+
+/* Gradient fade at the bottom when content overflows */
+.section-preview-tooltip.has-overflow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--doc-cream));
+  border-radius: 0 0 6px 6px;
+  pointer-events: none;
+}

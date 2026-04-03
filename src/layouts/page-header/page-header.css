@@ -1,0 +1,139 @@
+/*
+ * page-header.css — styles for the fixed toolbar at the top of every page.
+ *
+ * .doc-page-header       – full-width fixed bar
+ * .doc-page-header-left  – left portion (home, nav, dropdown)
+ * .doc-page-header-right – right portion (sticky toggle, heading nums, theme)
+ * .doc-page-title        – document title text (currently unused, kept for consumers)
+ * .doc-home-btn          – home icon link
+ *
+ * Button visibility is driven by data-show-* attributes on the header.
+ * When an attribute is absent the corresponding control is hidden.
+ */
+
+.doc-page-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: calc(0.6rem + 4px) 1.25rem 0.6rem 0;
+  background:
+    linear-gradient(90deg, var(--doc-accent) 0%, var(--doc-highlight) 100%) top / 100% 4px no-repeat,
+    var(--doc-cream);
+  border-bottom: 1px solid var(--doc-border);
+}
+
+/* Left side of the header */
+.doc-page-header-left {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-left: 1.25rem;
+  padding-right: 0.75rem;
+}
+
+/* Right side of the header: toggle buttons */
+.doc-page-header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.doc-page-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 0.8rem + 0.4vw, 1.05rem);
+  line-height: 1.2;
+  color: var(--doc-ink);
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  pointer-events: none;
+  text-overflow: unset;
+}
+
+/* ── Home button ───────────────────────────────────────────────── */
+.doc-home-btn {
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-left: calc(1rem + 3px);
+}
+
+/* ── Shared header toggle button base ─────────────────────────
+ *
+ * Common styles for small icon toggle buttons (sticky headers,
+ * heading numbers).  Individual buttons add a specific class
+ * (.doc-sticky-toggle, .doc-heading-num-toggle) for targeting
+ * by data-show-* visibility rules and client scripts.
+ */
+.doc-header-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.85rem;
+  height: 1.85rem;
+  padding: 0;
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  background: var(--doc-cream);
+  color: var(--doc-highlight);
+  cursor: pointer;
+  margin-left: 0;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.doc-header-toggle:hover {
+  background: var(--doc-surface);
+  border-color: var(--doc-highlight);
+}
+
+.doc-header-toggle[aria-pressed="false"] {
+  color: var(--doc-ink-light);
+  background: var(--doc-surface);
+}
+
+.doc-header-toggle[aria-pressed="false"]:hover {
+  color: var(--doc-highlight);
+}
+
+/* ── Button visibility (data-show-* attribute selectors) ───────
+ *
+ * Each header button is hidden when its corresponding data attribute
+ * is absent from the <header> element.  The attributes are set
+ * server-side via the `buttons` prop and kept in sync client-side
+ * by home-button-sync.ts during View Transition navigations.
+ */
+.doc-page-header:not([data-show-home]) .doc-home-btn {
+  display: none;
+}
+
+.doc-page-header:not([data-show-nav]) .doc-nav-buttons {
+  display: none;
+}
+
+.doc-page-header:not([data-show-dropdown]) .doc-dropdown {
+  display: none;
+}
+
+.doc-page-header:not([data-show-sticky]) .doc-sticky-toggle {
+  display: none;
+}
+
+.doc-page-header:not([data-show-heading-num]) .doc-heading-num-toggle {
+  display: none;
+}
+
+.doc-page-header:not([data-show-theme]) .doc-theme-toggle {
+  display: none;
+}

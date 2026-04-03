@@ -1,0 +1,28 @@
+---
+/**
+ * TR — table row with optional LinkTarget behaviour.
+ *
+ * When `id` is provided, wraps via LinkTarget (as="tr") making it
+ * discoverable by the unified preview system (link-preview.ts).  The
+ * preview clones the parent table's <thead> alongside the row so the
+ * tooltip always shows column headers for context.
+ *
+ * When `id` is omitted, renders a plain <tr>.
+ */
+import LinkTarget from "../link-target/link-target.astro";
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+{id ? (
+  <LinkTarget id={id} as="doc-tr" class={className || undefined}>
+    <slot />
+  </LinkTarget>
+) : (
+  <doc-tr class={className || undefined}><slot /></doc-tr>
+)}

@@ -1,0 +1,142 @@
+/*
+ * table.css — table styles for doc-shell (section 12).
+ *
+ * .doc-table-wrap        – outer wrapper with border-radius and shadow
+ * doc-table doc-thead    – sticky header (top offset = --table-sticky-top,
+ *                          updated by sticky-headers.ts)
+ * Alternating row stripes use --doc-tint-subtle; hover uses --doc-tint.
+ */
+
+/* Outer wrapper providing rounded corners and a subtle shadow */
+.document .doc-table-wrap {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--doc-border);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom doc-table elements render with table semantics */
+.document doc-table {
+  display: table;
+}
+
+.document doc-thead {
+  display: table-header-group;
+}
+
+.document doc-tbody {
+  display: table-row-group;
+}
+
+.document doc-tr {
+  display: table-row;
+}
+
+.document doc-th,
+.document doc-td {
+  display: table-cell;
+}
+
+/* Base table — full width, no collapsed borders, raised-surface background */
+.document doc-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  background: var(--doc-surface);
+}
+
+/* Wrapped tables: auto column sizing */
+.document .doc-table-wrap doc-table {
+  table-layout: auto;
+}
+
+/* Table header — sticky below the heading stack (--table-sticky-top) */
+.document doc-table doc-thead {
+  background: var(--doc-table-default);
+  color: #fff;
+  position: sticky;
+  top: var(--table-sticky-top, 0px);
+  z-index: 7;
+}
+
+/* Header cells: left-aligned, bold, with a subtle dark bottom border */
+.document doc-table doc-thead doc-th {
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-family: inherit;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Links inside header cells stay white regardless of link colour overrides */
+.document doc-table doc-thead doc-th a {
+  color: #ffffff !important;
+}
+
+/* Vertical divider between header cells */
+.document doc-table doc-thead doc-th + doc-th {
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Rounded top corners on the header row's first and last cells */
+.document doc-table doc-thead doc-th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.document doc-table doc-thead doc-th:last-child {
+  border-top-right-radius: 5px;
+}
+
+/* Alternating row stripes for readability */
+.document doc-table doc-tbody doc-tr:nth-child(even) {
+  background: var(--doc-tint-subtle);
+}
+
+/* Row hover highlight */
+.document doc-table doc-tbody doc-tr:hover {
+  background: var(--doc-tint);
+}
+
+/* Body cells: secondary text colour, separated by bottom border */
+.document doc-table doc-td {
+  padding: 0.6rem 1rem;
+  color: var(--doc-ink-light);
+  vertical-align: top;
+  border-bottom: 1px solid var(--doc-border);
+}
+
+/* Reset min-width on hover to prevent layout jank */
+.document doc-table doc-td:hover {
+  min-width: unset;
+}
+
+/* First column in wrapped tables: no wrap (row labels / field names) */
+.document .doc-table-wrap doc-table doc-tbody doc-td:first-child {
+  white-space: nowrap;
+}
+
+/* Vertical divider between body cells */
+.document doc-table doc-td + doc-td {
+  border-left: 1px solid var(--doc-border);
+}
+
+/* Last row: no bottom border; rounded bottom corners */
+.document doc-table doc-tbody doc-tr:last-child doc-td {
+  border-bottom: none;
+}
+
+.document doc-table doc-tbody doc-tr:last-child doc-td:first-child {
+  border-bottom-left-radius: 5px;
+}
+
+.document doc-table doc-tbody doc-tr:last-child doc-td:last-child {
+  border-bottom-right-radius: 5px;
+}
+
+/* First column in every row: bold, primary ink colour (row identifier) */
+.document doc-table doc-td:first-child {
+  font-weight: 500;
+  color: var(--doc-ink);
+}

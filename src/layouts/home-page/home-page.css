@@ -1,0 +1,86 @@
+/*
+ * home-page.css — styles for the HomePage card grid landing page.
+ *
+ * .doc-home-content     – centered content wrapper below the page header
+ * .doc-home-title       – page heading
+ * .doc-home-grid        – responsive card grid
+ * .doc-home-card        – individual document card with hover effects
+ * .doc-home-card-title  – card heading text
+ * .doc-home-card-desc   – card description text
+ * .doc-home-card-arrow  – decorative arrow icon
+ */
+
+.doc-home-content {
+  padding-top: calc(var(--doc-header-height) + 2rem);
+  max-width: 860px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 4rem;
+}
+
+.doc-home-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--doc-ink);
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.doc-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.doc-home-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.4rem 1.5rem;
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--doc-ink);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  position: relative;
+}
+
+.doc-home-card:hover {
+  border-color: var(--doc-highlight);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.doc-home-card-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--doc-ink);
+  letter-spacing: -0.01em;
+}
+
+.doc-home-card:hover .doc-home-card-title {
+  color: var(--doc-highlight);
+}
+
+.doc-home-card-desc {
+  font-size: 0.88rem;
+  color: var(--doc-ink-light);
+  line-height: 1.5;
+}
+
+.doc-home-card-arrow {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.25rem;
+  color: var(--doc-border);
+  transition: color 0.15s, transform 0.15s;
+}
+
+.doc-home-card:hover .doc-home-card-arrow {
+  color: var(--doc-highlight);
+  transform: translateX(3px);
+}
