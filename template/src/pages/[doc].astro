@@ -1,0 +1,22 @@
+---
+import DocLayout from "doc-shell/layouts/doc-layout/doc-layout.astro";
+import MainLayout from "doc-shell/layouts/main-layout/main-layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const collection = (await getCollection("documents")).sort(
+    (a, b) => a.data.order - b.data.order,
+  );
+  return collection.map((entry) => ({
+    params: { doc: entry.slug },
+    props: { entry, collection },
+  }));
+}
+const title = "_PROJECT_TITLE_";
+const { entry, collection } = Astro.props;
+const components = {};
+---
+
+<MainLayout title={title} collection={collection} entry={entry}>
+  <DocLayout entry={entry} components={components} />
+</MainLayout>
