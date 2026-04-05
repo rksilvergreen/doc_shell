@@ -1,0 +1,16 @@
+{
+  "name": "_PROJECT_NAME_",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.13",
+    "astro": "^5.18.0",
+    "doc-shell": "github:rksilvergreen/doc_shell"
+  }
+}
