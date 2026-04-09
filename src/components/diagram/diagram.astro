@@ -1,0 +1,36 @@
+---
+/**
+ * Diagram — renders a Mermaid diagram from a text definition.
+ *
+ * Accepts a `code` prop containing the Mermaid syntax string (flowchart,
+ * sequence, graph, etc.).  On the client, diagram.ts loads the Mermaid
+ * library from CDN and replaces the raw source with a rendered SVG.
+ *
+ * While the library loads, the raw mermaid source is shown at low opacity
+ * as a loading placeholder.
+ *
+ * Works in two modes:
+ *   1. As an Astro/MDX component: <Diagram code="graph TD; A-->B" />
+ *   2. As raw HTML in .md files:
+ *        <div class="doc-diagram">
+ *          <pre class="doc-diagram-code">graph TD; A-->B</pre>
+ *        </div>
+ *      (requires diagram.css + diagram.ts to be loaded by the page)
+ */
+import "./diagram.css";
+
+interface Props {
+  /** Mermaid diagram definition (flowchart, sequence, graph, etc.). */
+  code: string;
+  id?: string;
+  class?: string;
+}
+
+const { code, id, class: className } = Astro.props;
+---
+
+<div class:list={["doc-diagram", className]} id={id}>
+  <pre class="doc-diagram-code">{code.trim()}</pre>
+</div>
+
+<script src="./diagram.ts"></script>

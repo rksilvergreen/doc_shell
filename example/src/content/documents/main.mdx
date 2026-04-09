@@ -1,0 +1,671 @@
+---
+title: "Main Manual"
+description: "All example sections combined into a single doc (for baseline navigation)."
+order: 1
+---
+
+<Section id="sec-1" title="Overview">
+
+This is the Space Exploration Manual, a reference document covering spacecraft, missions, operations, and procedures. It demonstrates every feature of the doc-shell document framework.
+
+<Section id="sec-1-1" title="Purpose">
+
+Use this manual for vessel specs, mission planning, launch rules, and day-to-day operations. For quick reference: <Link to="sec-2-1-1">Spacecraft Registry</Link>, <Link to="sec-3-1-1">Launch Procedures</Link>, <Link to="sec-6-1">Daily Operations</Link>.
+
+</Section>
+
+<Section id="sec-1-2" title="Document Map">
+
+<Link to="sec-2">Spacecraft</Link> — Types, propulsion, subsystems. <Link to="sec-3">Missions</Link> — Planning, status, classification. <Link to="sec-4">Safety</Link> — Brief safety rules. <Link to="sec-5">Glossary</Link> — Terms. <Link to="sec-6">Operations</Link> — Procedures and protocols. <Link to="sec-7">Training</Link> — Certification. <Link to="sec-8">Appendix</Link> — References.
+
+</Section>
+
+</Section>
+
+<Section id="sec-2" title="Spacecraft">
+
+This section catalogues spacecraft types, propulsion systems, and onboard subsystems used across all mission profiles.
+
+<Section id="sec-2-1" title="Spacecraft Types">
+
+Every spacecraft in the fleet is categorized by its primary role. The registry below lists each vessel class alongside its key specifications.
+
+<Section id="sec-2-1-1" title="Spacecraft Registry">
+
+Every spacecraft in the fleet is categorized by its primary role. The registry below lists each vessel class alongside its key specifications.
+
+<Section id="sec-2-1-1-1" title="Registry by Status">
+
+Vessels are grouped by operational status for quick reference.
+
+<Section id="sec-2-1-1-1-1" title="Active">
+
+Active craft are cleared for mission assignment and available in the pool. Atlas IV, Horizon, and Meridian currently hold Active status. Each has passed the latest readiness review and is eligible for tasking.
+
+</Section>
+
+<Section id="sec-2-1-1-1-2" title="In-Transit">
+
+In-transit vessels are already committed to a mission and cannot be reassigned until the current mission ends. Voyager X is in transit. Status is updated when the craft reaches its destination or is formally released from the mission.
+
+</Section>
+
+<Section id="sec-2-1-1-1-3" title="Retired">
+
+Retired craft are no longer in the operational fleet. No further missions or refits are planned; see <Link to="sec-2-5">Maintenance and Refit</Link> for retirement criteria. Sentinel is retired.
+
+</Section>
+
+<Section id="sec-2-1-1-1-4" title="Standby and Reserve">
+
+Standby or reserve status applies to craft that are temporarily unavailable (e.g. in refit, awaiting certification, or held in reserve). They remain on the registry but are excluded from the active mission pool until status is updated.
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-1-1-2" title="Registry by Role">
+
+Role determines mission type and certification.
+
+<Section id="sec-2-1-1-2-1" title="Active and In-Transit">
+
+Atlas IV, Horizon, Meridian, and Voyager X are currently in the active fleet or in transit. Active craft are cleared for mission assignment; in-transit craft are already committed.
+
+Atlas IV, Horizon, Meridian, and Voyager X are currently in the active fleet or in transit. Active craft are cleared for mission assignment; in-transit craft are already committed.
+
+</Section>
+
+<Section id="sec-2-1-1-2-2" title="Retired">
+
+Sentinel is retired. No further missions or refits are planned; see <Link to="sec-2-5">Maintenance and Refit</Link> for retirement criteria.
+
+</Section>
+
+<Section id="sec-2-1-1-2-3" title="Crewed Vessels">
+
+Horizon and Meridian are human-rated and support crew. Capacity and life-support limits apply.
+
+1
+
+1
+
+1
+
+1
+
+1
+
+</Section>
+
+<Section id="sec-2-1-1-2-4" title="Cargo and Probe">
+
+Atlas IV (cargo) and Voyager X (probe) are uncrewed. Different safety and comm protocols apply.
+
+</Section>
+
+<Section id="sec-2-1-1-2-5" title="Registry Maintenance and Reclassification">
+
+The spacecraft registry is maintained by Mission Planning and updated whenever a vessel's role or status changes. Reclassification is required when a craft is repurposed (e.g. from crewed shuttle to cargo-only after human-rating lapse), when a new class is introduced, or when a vessel is retired.
+
+Proposed changes are submitted via the Registry Change Request (RCR) form and reviewed by the Fleet Director. Approval updates the master registry, the mission-assignment rules, and the certification matrix. No vessel may be assigned to a mission type for which it is not currently certified in the registry.
+
+Historical role and status are preserved in the registry archive so that past missions can be correctly attributed. For audit and training, the archive is read-only; only the current snapshot is used for planning and operations.
+
+Registry entries include: designation, role, crew capacity, propulsion system, status, date of last reclassification, and (for retired craft) retirement date and reason. Optional notes may record temporary role changes (e.g. a crewed vessel used in uncrewed mode for a test flight).
+
+At least once per quarter, Mission Planning reconciles the registry against the actual fleet: every active or in-transit vessel must have a current registry entry, and every registry entry must correspond to a real asset or a formally retired vessel. Discrepancies are escalated to the Fleet Director and corrected before the next planning cycle.
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-1-2" title="Propulsion Systems">
+
+Each propulsion system defines the thrust profile and fuel requirements for its class of spacecraft. See the <Link to="sec-2-1-1">Spacecraft Registry</Link> for which vessels use each system.
+
+<Table>
+  <THead>
+    <TR>
+      <TH>System</TH>
+      <TH>Thrust Class</TH>
+      <TH>Fuel Type</TH>
+      <TH>Specific Impulse</TH>
+    </TR>
+  </THead>
+  <TBody>
+    <TR id="row-prop-chemical">
+      <TD>Chemical Bipropellant</TD>
+      <TD>High</TD>
+      <TD>LOX / RP-1</TD>
+      <TD>350 s</TD>
+    </TR>
+    <TR id="row-prop-ion">
+      <TD>Ion Drive</TD>
+      <TD>Low (sustained)</TD>
+      <TD>Xenon</TD>
+      <TD>3,100 s</TD>
+    </TR>
+    <TR id="row-prop-fusion">
+      <TD>Fusion Pulse</TD>
+      <TD>Very high</TD>
+      <TD>Deuterium-Tritium</TD>
+      <TD>12,000 s</TD>
+    </TR>
+  </TBody>
+</Table>
+
+<Section id="sec-2-1-2-1" title="Chemical Propulsion">
+
+High thrust, short burn; used for ascent and insertion.
+
+<Section id="sec-2-1-2-1-1" title="Bipropellant (LOX/RP-1)">
+
+Chemical bipropellant uses liquid oxygen and RP-1. Specific impulse ~350 s. Used by Meridian and (historically) Sentinel.
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-1-2-2" title="Electric Propulsion">
+
+Low thrust, long burn; used for cargo and probes.
+
+<Section id="sec-2-1-2-2-1" title="Ion Drive">
+
+Xenon ion drive, 3,100 s Isp. Used by Atlas IV and Voyager X for efficient long-duration burns.
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-1-2-3" title="Fusion Propulsion">
+
+Very high thrust and Isp; used for deep-space crewed missions.
+
+<Section id="sec-2-1-2-3-1" title="D-T Fusion Pulse">
+
+Deuterium-tritium fusion pulse drive, 12,000 s Isp. Horizon only. Requires dedicated fuel handling and shielding.
+
+</Section>
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-2" title="Design Philosophy">
+
+Fleet vessels are built for modularity and long service life. Standard interfaces allow subsystem swaps and upgrades without full refits. All crewed craft meet the same human-rating and redundancy requirements; uncrewed probes use a lighter but still standardized bus.
+
+</Section>
+
+<Section id="sec-2-3" title="Subsystems">
+
+All spacecraft share a common set of onboard subsystems, organized hierarchically by function.
+
+<Section id="sec-2-3-1" title="Subsystem Overview">
+
+<div class="doc-tree">
+<ul>
+<li><strong>Power</strong><ul><li>Solar Arrays</li><li>RTG (Radioisotope Thermoelectric Generator)</li><li>Battery Bank</li></ul></li>
+<li><strong>Life Support</strong><ul><li>Atmospheric Control</li><li>Water Recovery</li><li>Thermal Regulation</li></ul></li>
+<li><strong>Navigation</strong><ul><li>Star Tracker</li><li>Inertial Measurement Unit</li><li>Ground Uplink Receiver</li></ul></li>
+<li><strong>Communications</strong><ul><li>S-Band Transponder</li><li>Ka-Band High-Gain Antenna</li><li>Laser Comm Terminal</li></ul></li>
+</ul>
+</div>
+
+<Section id="sec-2-3-1-1" title="Power Subsystem">
+
+Power is provided by solar arrays, RTG, or battery depending on mission.
+
+<Section id="sec-2-3-1-1-1" title="Solar and RTG">
+
+LEO craft use solar arrays; deep-space probes may use RTG where sunlight is insufficient.
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-3-1-2" title="Life Support Subsystem">
+
+Crewed craft only. Atmospheric control, water recovery, thermal regulation.
+
+<Section id="sec-2-3-1-2-1" title="Redundancy">
+
+Life support has N+1 redundancy on all crewed missions; failure of one unit does not compromise the crew.
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-3-2" title="Power Requirements">
+
+Power budgets are computed per mission phase. The following constraints determine total power allocation for the <Link to="row-horizon">Horizon</Link> deep-space explorer.
+
+<p><strong>Cruise Phase Budget</strong></p>
+<ol class="doc-rules-list" style={{listStyle: "none"}}>
+<li><div class="doc-rule-line doc-rule-conditions"><span class="doc-rule-num"></span><span class="doc-rule-keyword">If</span><span class="doc-rule-content">mission phase = <strong>Cruise</strong></span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Then</span><span class="doc-rule-content">allocate 40% to <strong>Ion Drive</strong>, 25% to <strong>Life Support</strong>, 20% to <strong>Communications</strong>, 15% to <strong>Navigation</strong></span></div></li>
+</ol>
+
+<p><strong>Orbital Insertion Budget</strong></p>
+<ol class="doc-rules-list" style={{listStyle: "none"}}>
+<li><div class="doc-rule-line doc-rule-conditions"><span class="doc-rule-num"></span><span class="doc-rule-keyword">If</span><span class="doc-rule-content">mission phase = <strong>Orbital Insertion</strong></span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Then</span><span class="doc-rule-content">allocate 65% to <strong>Propulsion</strong>, 20% to <strong>Life Support</strong>, 10% to <strong>Navigation</strong>, 5% to <strong>Communications</strong></span></div></li>
+<li><div class="doc-rule-line doc-rule-conditions"><span class="doc-rule-num"></span><span class="doc-rule-keyword">If</span><span class="doc-rule-content">battery charge {'<'} 20%</span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Then</span><span class="doc-rule-content">defer non-essential <strong>Communications</strong> until charge {'>'} 40%</span></div></li>
+</ol>
+
+</Section>
+
+</Section>
+
+<Section id="sec-2-4" title="Mass and Payload">
+
+Payload capacity and dry mass determine which missions each vessel can support. Heavy cargo runs use <Link to="row-atlas">Atlas IV</Link>; crew rotations use <Link to="sec-2-1-1">Spacecraft Registry</Link> or, for long-duration, <Link to="row-horizon">Horizon</Link>. Probe missions are mass-limited by the launch vehicle; Voyager X carries only instruments and comms.
+
+</Section>
+
+<Section id="sec-2-5" title="Maintenance and Refit">
+
+Every vessel follows a scheduled maintenance regime. Post-flight inspections cover thermal tiles, propulsion plumbing, and avionics. Life-support filters and battery packs are replaced on fixed intervals; ion drives get thruster wear checks after each long burn.
+
+Major refits are planned between missions. During a refit, subsystems can be upgraded (e.g. swapping an older S-Band transponder for a Ka-Band unit), and structural inspections are performed. The <Link to="row-sentinel">Sentinel</Link> class was retired after refit costs exceeded the value of continued operation; the <Link to="row-meridian">Meridian</Link> fleet now handles the same role with better margins.
+
+Uncrewed craft receive remote diagnostics and, where possible, software and parameter updates. Voyager X cannot be physically serviced but continues to receive command uplinks and trajectory corrections.
+
+</Section>
+
+</Section>
+
+<Section id="sec-3" title="Missions">
+
+This section covers mission planning, operational rules, status tracking, and classification.
+
+<Section id="sec-3-1" title="Mission Planning">
+
+All missions follow standardized planning and launch procedures. Rules are evaluated in order and must all pass before launch authorization is granted.
+
+<Section id="sec-3-1-1" title="Launch Procedures">
+
+<ol class="doc-rules-list" style={{listStyle: "none"}}>
+<li><div class="doc-rule-line doc-rule-header"><span class="doc-rule-num">(1) </span><span class="doc-rule-keyword">Trigger</span><span class="doc-rule-content"><strong>Launch window opens</strong> →</span></div><div class="doc-rule-line doc-rule-conditions"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Condition</span><span class="doc-rule-content">Weather clearance = <strong>GO</strong></span></div><div class="doc-rule-line"><span class="doc-rule-num"></span><span class="doc-rule-cont">&</span><span class="doc-rule-content">Range safety = <strong>Clear</strong></span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Action</span><span class="doc-rule-content">Begin countdown sequence. Set mission status to <strong>Pre-Launch</strong>.</span></div></li>
+<li><div class="doc-rule-line doc-rule-header"><span class="doc-rule-num">(2) </span><span class="doc-rule-keyword">Trigger</span><span class="doc-rule-content"><strong>T-minus 10 minutes</strong> →</span></div><div class="doc-rule-line doc-rule-conditions"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Condition</span><span class="doc-rule-content">All subsystems report <strong>nominal</strong></span></div><div class="doc-rule-line"><span class="doc-rule-num"></span><span class="doc-rule-cont">&</span><span class="doc-rule-content">Propellant levels ≥ 98%</span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Action</span><span class="doc-rule-content">Arm flight termination system. Confirm crew readiness.</span></div></li>
+<li><div class="doc-rule-line doc-rule-header"><span class="doc-rule-num">(3) </span><span class="doc-rule-keyword">Trigger</span><span class="doc-rule-content"><strong>Main engine ignition confirmed</strong> →</span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Action</span><span class="doc-rule-content">Release hold-down clamps. Set mission status to <strong>In Flight</strong>.</span></div></li>
+<li><div class="doc-rule-line doc-rule-header"><span class="doc-rule-num">(4) </span><span class="doc-rule-keyword">Trigger</span><span class="doc-rule-content"><strong>Orbit achieved</strong> →</span></div><div class="doc-rule-line doc-rule-conditions"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Condition</span><span class="doc-rule-content">Orbital parameters within tolerance</span></div><div class="doc-rule-line doc-rule-then"><span class="doc-rule-num"></span><span class="doc-rule-keyword">Action</span><span class="doc-rule-content">Set mission status to <strong>Orbit Achieved</strong>. Begin payload deployment.</span></div></li>
+</ol>
+
+<Section id="sec-3-1-1-1" title="Countdown Phases">
+
+Launch is divided into distinct countdown phases, each with its own go/no-go criteria.
+
+<Section id="sec-3-1-1-1-1" title="Pre-Countdown">
+
+Before the countdown starts, weather and range must be GO. Mission status is set to Pre-Launch only after the first rule (1) is satisfied.
+
+1
+
+1
+
+1
+
+1
+
+</Section>
+
+<Section id="sec-3-1-1-1-2" title="Final Ten Minutes">
+
+At T-minus 10 minutes, all subsystems must be nominal and propellant at or above 98%. Flight termination system is armed and crew readiness confirmed.
+
+</Section>
+
+</Section>
+
+<Section id="sec-3-1-1-2" title="Post-Ignition">
+
+After main engine ignition, hold-down clamps release and status becomes In Flight. No rollback after this point.
+
+<Section id="sec-3-1-1-2-1" title="Orbit Insertion">
+
+When orbital parameters are within tolerance, status is set to Orbit Achieved and payload deployment may begin.
+
+</Section>
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-3-2" title="Mission Status">
+
+Every mission progresses through a defined set of statuses. These statuses drive dashboard views, reporting, and automation triggers.
+
+<Section id="sec-3-2-1" title="Mission Status Groups">
+
+<ul>
+  <li><strong>Pre-Launch</strong> — Countdown initiated, all systems being verified.</li>
+  <li><strong>In Flight</strong> — Vehicle has cleared the launch pad and is in powered ascent or transit.</li>
+  <li><strong>Orbit Achieved</strong> — Stable orbit confirmed, payload operations may begin.</li>
+  <li><strong>Completed</strong> — Mission objectives fulfilled; vehicle deorbited or parked.</li>
+  <li><strong>Aborted</strong> — Mission terminated before completion due to anomaly.</li>
+</ul>
+
+<Section id="sec-3-2-1-1" title="Status Transitions">
+
+Status changes are logged and drive reporting and automation.
+
+<Section id="sec-3-2-1-1-1" title="Valid Transitions">
+
+Pre-Launch → In Flight → Orbit Achieved → Completed. Aborted can be entered from any pre-Completed status. No reverse transitions except for data correction.
+
+</Section>
+
+<Section id="sec-3-2-1-1-2" title="Dashboard Display">
+
+Dashboards show current status with color coding; history is available in the mission log for audit.
+
+</Section>
+
+</Section>
+
+<Section id="sec-3-2-1-2" title="Status Definitions">
+
+Each status has a formal definition used for reporting and compliance.
+
+<Section id="sec-3-2-1-2-1" title="Pre-Launch Through Orbit">
+
+Pre-Launch: countdown in progress. In Flight: vehicle in powered ascent or transit. Orbit Achieved: stable orbit confirmed.
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-3-2-2" title="Mission Classification">
+
+Missions are classified by type for scheduling and resource allocation.
+
+<ul>
+  <li><strong>Crewed</strong> — Missions carrying human crew to orbit or beyond.</li>
+  <li><strong>Cargo</strong> — Uncrewed resupply or payload delivery missions.</li>
+  <li><strong>Probe</strong> — Autonomous scientific exploration beyond Earth orbit.</li>
+  <li><strong>LEO Service</strong> — Satellite deployment, maintenance, or debris cleanup in low Earth orbit.</li>
+  <li><strong>Test Flight</strong> — Vehicle or system qualification flights.</li>
+</ul>
+
+</Section>
+
+</Section>
+
+<Section id="sec-3-3" title="Mission Timeline">
+
+Typical crewed mission flow: Pre-Launch → In Flight → Orbit Achieved → (on-orbit operations) → Completed. Cargo and probe missions may skip crew steps but use the same status model. Aborted status is used when a mission is terminated early; post-abort reviews are mandatory.
+
+</Section>
+
+<Section id="sec-3-4" title="Cross References">
+
+This section demonstrates cross-referencing between different parts of the document.
+
+The <Link to="row-horizon">Horizon</Link> spacecraft, equipped with a <Link to="row-prop-fusion">Fusion Pulse</Link> drive, is the primary vessel for deep-space missions. Before any launch, all crews must follow the <Link to="sec-3-1-1">Launch Procedures</Link> documented above.
+
+Cargo deliveries to the station are handled by the <Link to="row-atlas">Atlas IV</Link> using its efficient <Link to="row-prop-ion">Ion Drive</Link>. The retired <Link to="row-sentinel">Sentinel</Link> has been replaced by the <Link to="row-meridian">Meridian</Link> for all orbital crew transfers.
+
+Current mission statuses are tracked in the <Link to="sec-3-2-1">Mission Status Groups</Link>. Scheduling is organized by <Link to="sec-3-2-2">Mission Classification</Link> tags.
+
+For details on how power is allocated during different mission phases, see <Link to="sec-2-3-2">Power Requirements</Link>. The subsystem hierarchy is documented in the <Link to="sec-2-3-1">Subsystem Overview</Link>.
+
+</Section>
+
+</Section>
+
+<Section id="sec-4" title="Safety">
+
+All personnel must follow launch-range and vehicle safety rules. No exceptions.
+
+Emergency procedures are posted at each station; see <Link to="sec-6-2">Emergency Protocols</Link> for escalation and abort criteria.
+
+</Section>
+
+<Section id="sec-5" title="Glossary">
+
+<strong>LEO</strong> — Low Earth Orbit. <strong>RTG</strong> — Radioisotope Thermoelectric Generator. <strong>LOX</strong> — Liquid oxygen. <strong>Human-rated</strong> — Certified for crewed flight. <strong>Go/No-Go</strong> — Launch decision point.
+
+</Section>
+
+<Section id="sec-6" title="Operations">
+
+This section describes day-to-day operational procedures, shift handover, communications windows, and emergency protocols. All flight controllers and crew must be familiar with these before assuming duty.
+
+<Section id="sec-6-1" title="Daily Operations">
+
+Mission control runs on a 24/7 schedule during active missions. Shifts are typically eight hours, with a one-hour overlap for handover.
+
+<Section id="sec-6-1-1" title="Shift Structure">
+
+Three shifts per day; handover occurs at shift change.
+
+<Section id="sec-6-1-1-1" title="Handover">
+
+The outgoing shift briefs the incoming shift on status, anomalies, and upcoming events.
+
+<Section id="sec-6-1-1-1-1" title="Handover Checklist">
+
+Required: mission status, open anomalies, next 24 h milestones (burns, comm windows, crew sleep), weather/range constraints. Optional: forward plan, deferred items.
+
+</Section>
+
+<Section id="sec-6-1-1-1-2" title="Sign-Off">
+
+Outgoing Flight Director signs off only after incoming FD acknowledges and accepts the handover. Log the handover time in the mission log.
+
+</Section>
+
+</Section>
+
+<Section id="sec-6-1-1-2" title="Shift Length and Overlap">
+
+Standard shift is eight hours; one-hour overlap allows joint monitoring during critical events and reduces handover errors.
+
+</Section>
+
+</Section>
+
+<Section id="sec-6-1-2" title="Roles and Authority">
+
+Each shift has defined roles with clear authority boundaries.
+
+<Section id="sec-6-1-2-1" title="Flight Director">
+
+The FD has final say on operational decisions within the mission rules.
+
+<Section id="sec-6-1-2-1-1" title="FD Authority Scope">
+
+FD authority covers: go/no-go for nominal operations, anomaly response within procedures, and escalation to program management when required. FD does not override safety-critical abort criteria.
+
+</Section>
+
+</Section>
+
+<Section id="sec-6-1-2-2" title="CAPCOM and Ground Systems">
+
+CAPCOM handles crew communication; Ground Systems handles tracking and comms. Both report to the FD.
+
+<Section id="sec-6-1-2-2-1" title="Uncrewed Missions">
+
+Uncrewed missions (cargo, probes) have no CAPCOM. Autonomy scripts handle routine ops; ground intervenes for trajectory corrections, payload deployment, and contingencies.
+
+</Section>
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-6-2" title="Emergency Protocols">
+
+In case of a critical anomaly, the Flight Director may call an emergency hold or abort. Criteria for abort include: loss of redundancy in a critical system, crew injury or medical emergency, trajectory deviation outside safe limits, or loss of communications with a crewed vehicle beyond the allowed outage window.
+
+Abort procedures are vehicle- and phase-specific. During ascent, abort options include Return to Launch Site (RTLS), Abort to Orbit (ATO), or Transatlantic Abort Landing (TAL), depending on time and trajectory. In orbit, the crew may execute an emergency deorbit to a predetermined landing site; mission control coordinates with recovery forces.
+
+All emergency actions must be logged and reported to the program office within 24 hours. A formal mishap investigation is convened for any loss of vehicle, serious injury, or near-miss that could have led to either.
+
+<Section id="sec-6-2-1" title="Abort Types">
+
+Abort options depend on mission phase and vehicle.
+
+<Section id="sec-6-2-1-1" title="Ascent Aborts">
+
+During powered ascent, crewed vehicles may execute RTLS, ATO, or TAL.
+
+<Section id="sec-6-2-1-1-1" title="RTLS">
+
+Return to Launch Site. Used early in ascent when enough propellant remains to reverse and land at the pad.
+
+</Section>
+
+<Section id="sec-6-2-1-1-2" title="ATO and TAL">
+
+Abort to Orbit: reach a safe orbit, then assess. Transatlantic Abort Landing: land at a predetermined site across the ocean. Choice depends on time and trajectory.
+
+</Section>
+
+</Section>
+
+<Section id="sec-6-2-1-2" title="On-Orbit Emergencies">
+
+In orbit, crew may perform emergency deorbit to a designated landing site. Mission control coordinates with recovery forces.
+
+</Section>
+
+</Section>
+
+</Section>
+
+<Section id="sec-6-3" title="Communications Windows">
+
+Contact with spacecraft depends on ground-station visibility and orbital geometry. Low Earth orbit missions typically have multiple passes per day, each lasting from a few minutes to about fifteen minutes depending on altitude and station location. Deep-space missions have scheduled comm windows; the <Link to="row-horizon">Horizon</Link> and <Link to="row-voyager-x">Voyager X</Link> assets use the Deep Space Network (DSN) for long-range links.
+
+During a pass, priority is given to telemetry ingestion, command uplink (if needed), and voice or data exchange with crew. Non-critical uploads (e.g. software patches, science plans) are queued and sent when bandwidth allows. Missed windows are reported; repeated misses trigger a review of antenna scheduling and vehicle health.
+
+</Section>
+
+<Section id="sec-6-4" title="Logistics and Resupply">
+
+Cargo missions to the station are planned on a regular cadence. The <Link to="row-atlas">Atlas IV</Link> fleet handles the majority of resupply; each flight is manifested with consumables (water, oxygen, food, propellant), spare parts, and science payloads. Stowage is optimized for mass and center-of-gravity limits; loading is verified before closure of the cargo module.
+
+Return cargo (samples, failed hardware, trash) is loaded for disposal or analysis on Earth. Mass and volume on return legs are often more constrained than on ascent, so prioritization is agreed between the station crew and ground.
+
+</Section>
+
+<Section id="sec-6-5" title="Reporting and Metrics">
+
+Daily mission summaries are distributed to program management and stakeholders. They include: status (per <Link to="sec-3-2-1">Mission Status Groups</Link>), key events, anomalies, and forward plan. Weekly and monthly reports aggregate reliability metrics, propellant usage, and schedule performance.
+
+All reports are stored in the program repository. Auditors and safety reviewers have read-only access to logs and reports for the life of the program.
+
+</Section>
+
+</Section>
+
+<Section id="sec-7" title="Training">
+
+Personnel assigned to flight operations or crew must complete the appropriate certification track. Training is updated when procedures or vehicles change.
+
+<Section id="sec-7-1" title="Flight Controller Certification">
+
+Flight controllers complete classroom training on systems (power, propulsion, life support, etc.), then simulation runs covering nominal and off-nominal cases. Certification is signed off by the discipline lead and the Flight Director. Recertification is required annually and after any major procedure or vehicle change.
+
+</Section>
+
+<Section id="sec-7-2" title="Crew Training">
+
+Crew train on vehicle systems, emergency procedures, and mission-specific tasks (EVA, science ops, docking). They also participate in joint simulations with mission control. Crew are not certified for flight until all required runs are completed and the crew office concurs.
+
+</Section>
+
+<Section id="sec-7-3" title="Training Records">
+
+All certifications and recertifications are recorded in the training database. Audits ensure that only qualified personnel are assigned to active missions.
+
+</Section>
+
+</Section>
+
+<Section id="sec-8" title="Appendix">
+
+For external standards and design reference documents, see the program document library. Revision history of this manual is maintained in the repository; the current version is always the one deployed to the doc-shell site.
+
+<Section id="sec-8-1" title="Diagrams">
+
+Diagrams document system architecture, workflows, and decision sequences. They are defined inline using <a href="https://mermaid.js.org/">Mermaid</a> syntax and rendered automatically.
+
+<Section id="sec-8-1-1" title="Mission Workflow">
+
+The standard mission lifecycle from initial proposal through post-mission debrief.
+
+<Diagram code={`
+flowchart TD
+    A[Mission Proposal] --> B{Review Board}
+    B -->|Approved| C[Planning Phase]
+    B -->|Rejected| D[Archive]
+    C --> E[Vehicle Assignment]
+    E --> F[Pre-Launch Checks]
+    F --> G{Go / No-Go}
+    G -->|Go| H[Launch]
+    G -->|No-Go| F
+    H --> I[Mission Operations]
+    I --> J[Mission Complete]
+    J --> K[Debrief & Report]
+`} />
+
+</Section>
+
+<Section id="sec-8-1-2" title="Subsystem Dependencies">
+
+Top-level subsystem dependency graph for crewed vessels. Power feeds every other subsystem; Navigation drives Propulsion; Communications links to Ground Control.
+
+<Diagram code={`
+graph LR
+    Power -->|supplies| LifeSupport
+    Power -->|supplies| Navigation
+    Power -->|supplies| Communications
+    Power -->|supplies| Propulsion
+    Navigation -->|guides| Propulsion
+    Communications -->|relays to| GroundControl
+    LifeSupport -->|sustains| CrewModule
+`} />
+
+</Section>
+
+<Section id="sec-8-1-3" title="Launch Authorization Sequence">
+
+The message exchange between Mission Control, the Flight Director, the Launch Director, and the Vehicle during launch authorization.
+
+<Diagram code={`
+sequenceDiagram
+    participant MC as Mission Control
+    participant FD as Flight Director
+    participant LD as Launch Director
+    participant V as Vehicle
+
+    MC->>FD: Request go / no-go poll
+    FD->>MC: All stations nominal
+    MC->>LD: Authorize launch
+    LD->>V: Initiate countdown sequence
+    V-->>LD: Countdown nominal
+    LD->>MC: Launch commit confirmed
+    MC->>FD: Confirm trajectory tracking
+`} />
+
+</Section>
+
+</Section>
+
+</Section>

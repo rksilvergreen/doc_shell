@@ -1,0 +1,61 @@
+/*
+ * diagram.css — styles for Mermaid diagrams in doc-shell.
+ *
+ * .doc-diagram            – outer container (loading and rendered states)
+ * .doc-diagram-code       – raw mermaid source shown before rendering
+ * .doc-diagram-rendered   – added after successful SVG injection
+ * .doc-diagram-error      – added when mermaid fails to parse the code
+ */
+
+.document .doc-diagram {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--doc-border);
+  border-radius: 6px;
+  background: var(--doc-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+/* Raw source shown as a subtle placeholder while mermaid loads */
+.document .doc-diagram .doc-diagram-code {
+  font-family: 'DM Mono', 'Consolas', monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--doc-ink-light);
+  white-space: pre-wrap;
+  opacity: 0.35;
+  margin: 0;
+}
+
+/* Rendered state: tighter padding, the SVG is the only child */
+.document .doc-diagram.doc-diagram-rendered {
+  padding: 1rem;
+}
+
+.document .doc-diagram.doc-diagram-rendered svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Error state: accent border to flag broken definitions */
+.document .doc-diagram.doc-diagram-error {
+  border-color: var(--doc-accent);
+}
+
+.document .doc-diagram.doc-diagram-error .doc-diagram-code {
+  color: var(--doc-accent);
+  opacity: 1;
+}
+
+@media print {
+  .document .doc-diagram {
+    break-inside: avoid;
+    border-color: #d4d0ca;
+    box-shadow: none;
+  }
+}
