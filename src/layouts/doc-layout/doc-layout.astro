@@ -14,7 +14,6 @@
  *   head – injected at the end of <head> (extra styles, meta, etc.)
  */
 import "doc-shell/components/table/table.css";
-import "doc-shell/components/diagram/diagram.css";
 import "./doc-layout.css";
 import TOC from "doc-shell/layouts/toc/toc.astro";
 import Section from "doc-shell/components/section/section.astro";
@@ -68,4 +67,3 @@ const mergedComponents = { ...builtInComponents, ...components };
 <script src="./sticky-headers.ts"></script>
 <script src="./heading-numbers.ts"></script>
 <script src="./navigation.ts"></script>
-<script src="../../components/diagram/diagram.ts"></script>

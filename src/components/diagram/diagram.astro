@@ -1,22 +1,15 @@
 ---
 /**
- * Diagram — renders a Mermaid diagram from a text definition.
+ * Diagram — renders a Mermaid diagram at build time.
  *
  * Accepts a `code` prop containing the Mermaid syntax string (flowchart,
- * sequence, graph, etc.).  On the client, diagram.ts loads the Mermaid
- * library from CDN and replaces the raw source with a rendered SVG.
+ * sequence, graph, etc.).  Two SVGs are generated server-side — one for
+ * light theme, one for dark — and swapped via CSS on `[data-theme]`.
  *
- * While the library loads, the raw mermaid source is shown at low opacity
- * as a loading placeholder.
- *
- * Works in two modes:
- *   1. As an Astro/MDX component: <Diagram code="graph TD; A-->B" />
- *   2. As raw HTML in .md files:
- *        <div class="doc-diagram">
- *          <pre class="doc-diagram-code">graph TD; A-->B</pre>
- *        </div>
- *      (requires diagram.css + diagram.ts to be loaded by the page)
+ * Usage:
+ *   <Diagram code="graph TD; A-->B" />
  */
+import { renderMermaid } from "./render-mermaid";
 import "./diagram.css";
 
 interface Props {
@@ -27,10 +20,11 @@ interface Props {
 }
 
 const { code, id, class: className } = Astro.props;
+const lightSvg = await renderMermaid(code.trim(), "light");
+const darkSvg = await renderMermaid(code.trim(), "dark");
 ---
 
-<div class:list={["doc-diagram", className]} id={id}>
-  <pre class="doc-diagram-code">{code.trim()}</pre>
+<div class:list={["doc-diagram doc-diagram-rendered", className]} id={id}>
+  <div class="doc-diagram-light" set:html={lightSvg} />
+  <div class="doc-diagram-dark" set:html={darkSvg} />
 </div>
-
-<script src="./diagram.ts"></script>
