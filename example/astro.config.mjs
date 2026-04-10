@@ -6,6 +6,13 @@ import docShell from 'doc-shell/integration';
 export default defineConfig({
   integrations: [
     mdx({ remarkPlugins: [remarkSectionLevel] }),
-    docShell(),
+    docShell({
+      diagram: {
+        themeVars: {
+          light: { primaryColor: "#c8e6ff", lineColor: "#3366aa" },
+          dark:  { primaryColor: "#1a3355", lineColor: "#6699cc" },
+        },
+      },
+    }),
   ],
 });
