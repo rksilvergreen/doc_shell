@@ -1,0 +1,51 @@
+/*
+ * diagram.css — styles for build-time-rendered Mermaid diagrams.
+ *
+ * .doc-diagram            – outer container
+ * .doc-diagram-rendered   – always present (SVGs are pre-rendered)
+ * .doc-diagram-light/dark – theme-specific SVG wrappers, toggled via CSS
+ */
+
+.document .doc-diagram {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--doc-border);
+  border-radius: 6px;
+  background: var(--doc-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.document .doc-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mermaid renders flowchart/graph labels inside <foreignObject> as HTML
+   (e.g. <span class="nodeLabel"><p>…</p></span>).  Document typography
+   rules like `.document p { color }` apply directly to those <p> elements
+   and override the inherited Mermaid theme colour from the parent <span>.
+   Reset them so the Mermaid-themed colour cascades through correctly. */
+.document .doc-diagram :is(p, strong, em) {
+  color: inherit;
+}
+
+/* Theme swap: show only the SVG matching the active theme.
+   Default (no data-theme) is dark; data-theme="light" switches to light. */
+.doc-diagram .doc-diagram-dark { display: block; }
+.doc-diagram .doc-diagram-light { display: none; }
+
+[data-theme="light"] .doc-diagram .doc-diagram-dark { display: none; }
+[data-theme="light"] .doc-diagram .doc-diagram-light { display: block; }
+
+@media print {
+  .document .doc-diagram {
+    break-inside: avoid;
+    border-color: #d4d0ca;
+    box-shadow: none;
+  }
+}

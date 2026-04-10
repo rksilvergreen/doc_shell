@@ -1,0 +1,30 @@
+---
+/**
+ * Diagram — renders a Mermaid diagram at build time.
+ *
+ * Accepts a `code` prop containing the Mermaid syntax string (flowchart,
+ * sequence, graph, etc.).  Two SVGs are generated server-side — one for
+ * light theme, one for dark — and swapped via CSS on `[data-theme]`.
+ *
+ * Usage:
+ *   <Diagram code="graph TD; A-->B" />
+ */
+import { renderMermaid } from "./render-mermaid";
+import "./diagram.css";
+
+interface Props {
+  /** Mermaid diagram definition (flowchart, sequence, graph, etc.). */
+  code: string;
+  id?: string;
+  class?: string;
+}
+
+const { code, id, class: className} = Astro.props;
+const lightSvg = await renderMermaid(code.trim(), "light");
+const darkSvg = await renderMermaid(code.trim(), "dark");
+---
+
+<div class:list={["doc-diagram doc-diagram-rendered", className]} id={id}>
+  <div class="doc-diagram-light" set:html={lightSvg} />
+  <div class="doc-diagram-dark" set:html={darkSvg} />
+</div>

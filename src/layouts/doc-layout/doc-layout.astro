@@ -25,6 +25,7 @@ import TBody from "doc-shell/components/table/tbody.astro";
 import TR from "doc-shell/components/table/tr.astro";
 import TH from "doc-shell/components/table/th.astro";
 import TD from "doc-shell/components/table/td.astro";
+import Diagram from "doc-shell/components/diagram/diagram.astro";
 import type { TocEntry } from "doc-shell/layouts/toc/toc.astro";
 
 interface Props {
@@ -46,6 +47,7 @@ const builtInComponents = {
   TR,
   TH,
   TD,
+  Diagram,
 };
 const mergedComponents = { ...builtInComponents, ...components };
 ---

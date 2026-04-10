@@ -14,5 +14,8 @@ export default defineConfig({
       },
     },
   },
-  integrations: [mdx({ remarkPlugins: [remarkSectionLevel] })],
+  integrations: [
+    mdx({ remarkPlugins: [remarkSectionLevel] }),
+    docShell(),
+  ],
 });

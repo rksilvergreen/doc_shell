@@ -1,6 +1,14 @@
 ---
-import HomeLayout from "doc-shell/layouts/home-layout.astro";
-import { siteTitle, documents } from "../content/documents";
+import HomePage from "doc-shell/layouts/home-page/home-page.astro";
+import MainLayout from "doc-shell/layouts/main-layout/main-layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+const title = "Space Exploration Manual";
+const collection: CollectionEntry<"documents">[] = (
+  await getCollection("documents")
+).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<HomeLayout title={siteTitle} documents={documents} />
+<MainLayout title={title} collection={collection} buttons={{ theme: true }}>
+  <HomePage title={title} collection={collection} />
+</MainLayout>
