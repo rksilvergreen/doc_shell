@@ -5,13 +5,23 @@
  * pixel-accurate SVG output during Astro's SSG build.  A single shared
  * renderer instance is reused across all diagrams so the browser is
  * only launched once per build.
+ *
+ * Per-diagram colour overrides are passed via the `themeVars` parameter,
+ * NOT via Mermaid YAML frontmatter.  MDX/Astro strips leading whitespace
+ * from template-literal props, which breaks YAML indentation and silently
+ * prevents `config.themeVariables` from reaching Mermaid.  Merging into
+ * the `mermaidConfig` we pass to `initialize()` avoids that entirely and
+ * also ensures Mermaid's `getThemeVariables()` recomputes derived colours
+ * (nodeBkg, mainBkg, etc.) from the overridden inputs.
  */
 import {
   createMermaidRenderer,
   type MermaidRenderer,
 } from "mermaid-isomorphic";
+import { themeVars } from "virtual:doc-shell/diagram-theme";
 
 let renderer: MermaidRenderer | null = null;
+let renderCount = 0;
 
 function getRenderer(): MermaidRenderer {
   if (!renderer) {
@@ -20,38 +30,18 @@ function getRenderer(): MermaidRenderer {
   return renderer;
 }
 
-const THEME_VARS = {
-  light: {
-    background: "#faf8f5",
-    primaryColor: "#d6ebe2",
-    primaryTextColor: "#1c1c1c",
-    primaryBorderColor: "#2d5a4a",
-    lineColor: "#2d5a4a",
-    secondaryColor: "#e8e4de",
-    tertiaryColor: "#f3eee7",
-  },
-  dark: {
-    darkMode: true,
-    background: "#222228",
-    primaryColor: "#2d5a4a",
-    primaryTextColor: "#dcd8d0",
-    primaryBorderColor: "#5aaa8a",
-    lineColor: "#5aaa8a",
-    secondaryColor: "#35363d",
-    tertiaryColor: "#1a1b1f",
-  },
-} as const;
-
 export async function renderMermaid(
   code: string,
   theme: "light" | "dark",
 ): Promise<string> {
   const render = getRenderer();
 
+  const prefix = `mermaid-${theme}-${renderCount++}`;
   const [result] = await render([code], {
+    prefix,
     mermaidConfig: {
-      theme: theme === "dark" ? "dark" : "default",
-      themeVariables: THEME_VARS[theme],
+      theme: "base",
+      themeVariables: { ...themeVars[theme] },
     },
   });
 

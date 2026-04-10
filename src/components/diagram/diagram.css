@@ -25,13 +25,22 @@
   height: auto;
 }
 
-/* Theme swap: show only the SVG matching the active theme.
-   Default (no data-theme or data-theme="light") shows the light variant. */
-.doc-diagram .doc-diagram-dark { display: none; }
-.doc-diagram .doc-diagram-light { display: block; }
+/* Mermaid renders flowchart/graph labels inside <foreignObject> as HTML
+   (e.g. <span class="nodeLabel"><p>…</p></span>).  Document typography
+   rules like `.document p { color }` apply directly to those <p> elements
+   and override the inherited Mermaid theme colour from the parent <span>.
+   Reset them so the Mermaid-themed colour cascades through correctly. */
+.document .doc-diagram :is(p, strong, em) {
+  color: inherit;
+}
 
-[data-theme="dark"] .doc-diagram .doc-diagram-dark { display: block; }
-[data-theme="dark"] .doc-diagram .doc-diagram-light { display: none; }
+/* Theme swap: show only the SVG matching the active theme.
+   Default (no data-theme) is dark; data-theme="light" switches to light. */
+.doc-diagram .doc-diagram-dark { display: block; }
+.doc-diagram .doc-diagram-light { display: none; }
+
+[data-theme="light"] .doc-diagram .doc-diagram-dark { display: none; }
+[data-theme="light"] .doc-diagram .doc-diagram-light { display: block; }
 
 @media print {
   .document .doc-diagram {

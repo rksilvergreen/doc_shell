@@ -19,7 +19,7 @@ interface Props {
   class?: string;
 }
 
-const { code, id, class: className } = Astro.props;
+const { code, id, class: className} = Astro.props;
 const lightSvg = await renderMermaid(code.trim(), "light");
 const darkSvg = await renderMermaid(code.trim(), "dark");
 ---

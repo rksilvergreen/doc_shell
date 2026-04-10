@@ -8,6 +8,7 @@
     "preview": "npm run preview --prefix example"
   },
   "exports": {
+    "./integration": "./src/integration.ts",
     "./layouts/*": "./src/layouts/*",
     "./components/*": "./src/components/*",
     "./plugins/*": "./src/plugins/*",
