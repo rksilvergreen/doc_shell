@@ -6,22 +6,35 @@
  * sequence, graph, etc.).  Two SVGs are generated server-side — one for
  * light theme, one for dark — and swapped via CSS on `[data-theme]`.
  *
+ * The optional `zoom` prop (default 100) controls the display scale.
+ * At zoom=100 the diagram renders at its natural Mermaid coordinate size
+ * so text stays at a readable 16 px regardless of diagram complexity.
+ * Values above 100 enlarge; values below 100 shrink.
+ *
  * Usage:
  *   <Diagram code="graph TD; A-->B" />
+ *   <Diagram code="graph TD; A-->B" zoom={120} />
  */
-import { renderMermaid } from "./render-mermaid";
+import { renderMermaid, scaleSvg } from "./render-mermaid";
 import "./diagram.css";
 
 interface Props {
   /** Mermaid diagram definition (flowchart, sequence, graph, etc.). */
   code: string;
+  /** Display scale (100 = natural size, >100 = larger, <100 = smaller). */
+  zoom?: number;
   id?: string;
   class?: string;
 }
 
-const { code, id, class: className} = Astro.props;
-const lightSvg = await renderMermaid(code.trim(), "light");
-const darkSvg = await renderMermaid(code.trim(), "dark");
+const { code, zoom = 100, id, class: className } = Astro.props;
+const trimmed = code.trim();
+
+const light = await renderMermaid(trimmed, "light");
+const dark  = await renderMermaid(trimmed, "dark");
+
+const lightSvg = scaleSvg(light.svg, light.width, zoom);
+const darkSvg  = scaleSvg(dark.svg,  dark.width,  zoom);
 ---
 
 <div class:list={["doc-diagram doc-diagram-rendered", className]} id={id}>

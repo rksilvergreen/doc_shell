@@ -30,10 +30,32 @@ function getRenderer(): MermaidRenderer {
   return renderer;
 }
 
+export interface MermaidResult {
+  svg: string;
+  width: number;
+}
+
+/**
+ * Replace Mermaid's default `width="100%"` / `style="max-width:…"` on the
+ * root `<svg>` with an explicit pixel width derived from the viewBox and
+ * the requested zoom level.  This guarantees that SVG-coordinate font sizes
+ * map 1 : 1 to screen pixels at zoom = 100, regardless of diagram complexity.
+ */
+export function scaleSvg(
+  svg: string,
+  viewBoxWidth: number,
+  zoom: number,
+): string {
+  const displayWidth = Math.round(viewBoxWidth * zoom / 100);
+  let out = svg.replace(/\s*width="100%"/, ` width="${displayWidth}"`);
+  out = out.replace(/\s*style="max-width:\s*[\d.]+px;?\s*"/, "");
+  return out;
+}
+
 export async function renderMermaid(
   code: string,
   theme: "light" | "dark",
-): Promise<string> {
+): Promise<MermaidResult> {
   const render = getRenderer();
 
   const prefix = `mermaid-${theme}-${renderCount++}`;
@@ -41,7 +63,7 @@ export async function renderMermaid(
     prefix,
     mermaidConfig: {
       theme: "base",
-      themeVariables: { ...themeVars[theme] },
+      themeVariables: { ...themeVars[theme], fontSize: 16 },
     },
   });
 
@@ -51,5 +73,5 @@ export async function renderMermaid(
     );
   }
 
-  return result.value.svg;
+  return { svg: result.value.svg, width: result.value.width };
 }
