@@ -16,6 +16,7 @@
  *   <Diagram code="graph TD; A-->B" zoom={120} />
  */
 import { renderMermaid, scaleSvg } from "./render-mermaid";
+import Inspectable from "../inspectable/inspectable.astro";
 import "./diagram.css";
 
 interface Props {
@@ -37,7 +38,9 @@ const lightSvg = scaleSvg(light.svg, light.width, zoom);
 const darkSvg  = scaleSvg(dark.svg,  dark.width,  zoom);
 ---
 
-<div class:list={["doc-diagram doc-diagram-rendered", className]} id={id}>
-  <div class="doc-diagram-light" set:html={lightSvg} />
-  <div class="doc-diagram-dark" set:html={darkSvg} />
-</div>
+<Inspectable>
+  <div class:list={["doc-diagram doc-diagram-rendered", className]} id={id}>
+    <div class="doc-diagram-light" set:html={lightSvg} />
+    <div class="doc-diagram-dark" set:html={darkSvg} />
+  </div>
+</Inspectable>

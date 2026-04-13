@@ -1,0 +1,183 @@
+/*
+ * inspectable.css — styles for the Inspectable component: inline trigger,
+ * fullscreen backdrop, inspection modal, toolbar, and drag-to-pan states.
+ */
+
+/* ── Inline trigger ──────────────────────────────────────────────────── */
+
+.doc-inspectable {
+  cursor: zoom-in;
+  display: inline-block;
+}
+
+/* ── Backdrop ────────────────────────────────────────────────────────── */
+
+.inspectable-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.inspectable-backdrop.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── Modal ───────────────────────────────────────────────────────────── */
+
+.inspectable-modal {
+  position: fixed;
+  z-index: 10001;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--doc-surface);
+  border: 1px solid var(--doc-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100vw - 2 * max(5vw, 40px));
+  max-height: calc(100vh - 2 * max(5vh, 40px));
+}
+
+/* ── Content area ────────────────────────────────────────────────────── */
+
+.inspectable-content {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  position: relative;
+}
+
+.inspectable-content.is-pannable {
+  cursor: grab;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.inspectable-content.is-pannable::-webkit-scrollbar {
+  display: none;
+}
+
+.inspectable-content.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* Sizer: explicit layout dimensions so the scroll area matches visual size */
+.inspectable-sizer {
+  position: relative;
+}
+
+/* The scaled inner wrapper that holds the cloned content */
+.inspectable-inner {
+  transform-origin: top left;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ── Close button ────────────────────────────────────────────────────── */
+
+.inspectable-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.inspectable-close:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────── */
+
+.inspectable-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: var(--doc-tint);
+  border-top: 1px solid var(--doc-border);
+  border-radius: 0 0 8px 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.inspectable-toolbar-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--doc-border);
+  margin: 0 4px;
+}
+
+.inspectable-toolbar button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+}
+
+.inspectable-toolbar button:hover:not(:disabled) {
+  background: var(--doc-tint);
+}
+
+.inspectable-toolbar button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.inspectable-zoom-input {
+  width: 52px;
+  height: 28px;
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  background: var(--doc-surface);
+  color: var(--doc-ink);
+  font-size: 12px;
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+  padding: 0 2px;
+}
+
+.inspectable-zoom-input:focus {
+  border-color: var(--doc-highlight);
+}
+
+/* ── Print: hide the inspectable modal layer ─────────────────────────── */
+
+@media print {
+  .inspectable-backdrop,
+  .inspectable-modal {
+    display: none !important;
+  }
+}
