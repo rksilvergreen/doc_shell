@@ -387,7 +387,7 @@
   top: 0.6em;
   width: 5px;
   height: 5px;
-  background: var(--doc-accent);
+  background: var(--doc-ink);
   border-radius: 50%;
 }
 
