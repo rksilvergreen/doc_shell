@@ -666,6 +666,100 @@ sequenceDiagram
 
 </Section>
 
+<Section id="sec-8-1-4" title="Telemetry Pipeline (Graphviz)">
+
+The downlink telemetry pipeline, rendered with [Graphviz](https://graphviz.org/) DOT syntax via the `<GraphvizDiagram>` component.
+
+<GraphvizDiagram code={`
+digraph telemetry {
+    rankdir=LR;
+    node [shape=box];
+
+    Vehicle -> Antenna [label="S-band"];
+    Antenna -> GroundStation [label="downlink"];
+    GroundStation -> Decoder;
+    Decoder -> Archive;
+    Decoder -> MissionControl [label="live"];
+
+    subgraph cluster_ground {
+        label="Ground Segment";
+        Antenna; GroundStation; Decoder;
+    }
+}
+`} />
+
+<GraphvizDiagram code={`
+digraph G {bgcolor="#0000FF44:#FF000044" gradientangle=90
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Helvetica,Arial,sans-serif"]
+	edge [fontname="Helvetica,Arial,sans-serif"]
+
+	subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		fillcolor="darkgray:gold";
+		gradientangle=0
+		node [fillcolor="yellow:green" style=filled gradientangle=270] a0;
+		node [fillcolor="lightgreen:red"] a1;
+		node [fillcolor="lightskyblue:darkcyan"] a2;
+		node [fillcolor="cyan:lightslateblue"] a3;
+
+		a0 -> a1 -> a2 -> a3;
+		label = "process #1";
+	}
+
+	subgraph cluster_1 {
+		node [fillcolor="yellow:magenta" 
+			 style=filled gradientangle=270] b0;
+		node [fillcolor="violet:darkcyan"] b1;
+		node [fillcolor="peachpuff:red"] b2;
+		node [fillcolor="mediumpurple:purple"] b3;
+
+		b0 -> b1 -> b2 -> b3;
+		label = "process #2";
+		color=blue
+		fillcolor="darkgray:gold";
+		gradientangle=0
+		style=filled;
+	}
+	start -> a0;
+	start -> b0;
+	a1 -> b3;
+	b2 -> a3;
+	a3 -> a0;
+	a3 -> end;
+	b3 -> end;
+
+	// Invisible spacer column: forces a horizontal gap between
+	// cluster_0 and cluster_1 without distorting either cluster's
+	// internal width (which a global nodesep would do).
+	s0 [style=invis, shape=point, width=1.2, fixedsize=true, label=""];
+	s1 [style=invis, shape=point, width=1.2, fixedsize=true, label=""];
+	s2 [style=invis, shape=point, width=1.2, fixedsize=true, label=""];
+	s3 [style=invis, shape=point, width=1.2, fixedsize=true, label=""];
+	s0 -> s1 -> s2 -> s3 [style=invis];
+	a0 -> s0 -> b0 [style=invis, weight=100];
+	a1 -> s1 -> b1 [style=invis, weight=100];
+	a2 -> s2 -> b2 [style=invis, weight=100];
+	a3 -> s3 -> b3 [style=invis, weight=100];
+	{ rank=same; a0; s0; b0; }
+	{ rank=same; a1; s1; b1; }
+	{ rank=same; a2; s2; b2; }
+	{ rank=same; a3; s3; b3; }
+
+	start [shape=Mdiamond ,
+		fillcolor="pink:red",
+		gradientangle=90,
+		style=radial];
+	end [shape=Msquare,
+		fillcolor="lightyellow:orange",
+		style=radial,
+		gradientangle=90];
+}
+`} />
+
+</Section>
+
 </Section>
 
 </Section>

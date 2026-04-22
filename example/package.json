@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
+    "@hpcc-js/wasm-graphviz": "^1.21.2",
     "astro": "^5.18.0",
     "doc-shell": "file:.."
   }
