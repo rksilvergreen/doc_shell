@@ -1,0 +1,53 @@
+---
+/**
+ * GraphvizDiagram — renders a Graphviz (DOT) diagram at build time.
+ *
+ * Accepts a `code` prop containing DOT source (`digraph`, `graph`,
+ * `subgraph cluster_…`, etc.).  Two SVGs are produced server-side — one
+ * for light theme, one for dark — and swapped via CSS on `[data-theme]`,
+ * mirroring the Mermaid `<Diagram>` component.
+ *
+ * The optional `zoom` prop (default 100) controls the display scale.
+ * At zoom = 100 one Graphviz point maps to one CSS pixel, so labels and
+ * spacing render at their natural author-specified size.
+ *
+ * Usage:
+ *   <GraphvizDiagram code={`digraph { A -> B; B -> C; }`} />
+ *   <GraphvizDiagram code={`digraph { A -> B }`} zoom={120} />
+ */
+import { renderGraphviz, scaleSvg } from "./render-graphviz";
+import Inspectable from "../inspectable/inspectable.astro";
+import "./graphviz-diagram.css";
+
+interface Props {
+  /** Graphviz DOT source (digraph, graph, subgraph, etc.). */
+  code: string;
+  /** Display scale (100 = natural size, >100 = larger, <100 = smaller). */
+  zoom?: number;
+  id?: string;
+  class?: string;
+}
+
+const { code, zoom = 100, id, class: className } = Astro.props;
+const trimmed = code.trim();
+
+const light = await renderGraphviz(trimmed, "light");
+const dark  = await renderGraphviz(trimmed, "dark");
+
+const lightSvg = scaleSvg(light.svg, light.width, light.height, zoom);
+const darkSvg  = scaleSvg(dark.svg,  dark.width,  dark.height,  zoom);
+---
+
+<Inspectable>
+  <div
+    class:list={[
+      "doc-graphviz-diagram",
+      "doc-graphviz-diagram-rendered",
+      className,
+    ]}
+    id={id}
+  >
+    <div class="doc-graphviz-diagram-light" set:html={lightSvg} />
+    <div class="doc-graphviz-diagram-dark" set:html={darkSvg} />
+  </div>
+</Inspectable>

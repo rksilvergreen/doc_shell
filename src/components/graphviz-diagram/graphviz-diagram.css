@@ -1,0 +1,50 @@
+/*
+ * graphviz-diagram.css — styles for build-time-rendered Graphviz diagrams.
+ *
+ * .doc-graphviz-diagram             – outer container
+ * .doc-graphviz-diagram-rendered    – always present (SVGs are pre-rendered)
+ * .doc-graphviz-diagram-light/dark  – theme-specific SVG wrappers, toggled
+ *                                     via the `[data-theme]` attribute
+ */
+
+.document .doc-graphviz-diagram {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--doc-border);
+  border-radius: 6px;
+  background: var(--doc-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.document .doc-graphviz-diagram svg {
+  height: auto;
+  /* Strip the rectangular page background Graphviz emits as the first
+     <polygon> so it doesn't fight the container chrome.  The actual
+     theme background colour is applied to the wrapper above. */
+  background: transparent;
+}
+
+/* Theme swap: show only the SVG matching the active theme.
+   Default (no data-theme) is dark; data-theme="light" switches to light. */
+.doc-graphviz-diagram .doc-graphviz-diagram-dark { display: block; }
+.doc-graphviz-diagram .doc-graphviz-diagram-light { display: none; }
+
+[data-theme="light"] .doc-graphviz-diagram .doc-graphviz-diagram-dark {
+  display: none;
+}
+[data-theme="light"] .doc-graphviz-diagram .doc-graphviz-diagram-light {
+  display: block;
+}
+
+@media print {
+  .document .doc-graphviz-diagram {
+    break-inside: avoid;
+    border-color: #d4d0ca;
+    box-shadow: none;
+  }
+}
