@@ -391,6 +391,25 @@
   border-radius: 50%;
 }
 
+/* Ordered-list numbering: counter-based to match the custom bullet pattern */
+.document ol {
+  counter-reset: doc-ol;
+}
+
+.document ol li {
+  counter-increment: doc-ol;
+}
+
+.document ol li::before {
+  content: counter(doc-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 600;
+  color: var(--doc-ink);
+  font-size: 0.9em;
+}
+
 /* Nested lists: indented with a left border line */
 .document ul ul {
   margin-left: 1.25rem;
