@@ -604,25 +604,39 @@ For external standards and design reference documents, see the program document 
 
 <Section id="sec-8-1" title="Diagrams">
 
-Diagrams document system architecture, workflows, and decision sequences. They are defined inline using <a href="https://mermaid.js.org/">Mermaid</a> syntax and rendered automatically.
+Diagrams document system architecture, workflows, and decision sequences. They are defined inline using [Graphviz](https://graphviz.org/) DOT syntax via the `<GraphvizDiagram>` component.
 
 <Section id="sec-8-1-1" title="Mission Workflow">
 
 The standard mission lifecycle from initial proposal through post-mission debrief.
 
-<Diagram code={`
-flowchart TD
-    A[Mission Proposal] --> B{Review Board}
-    B -->|Approved| C[Planning Phase]
-    B -->|Rejected| D[Archive]
-    C --> E[Vehicle Assignment]
-    E --> F[Pre-Launch Checks]
-    F --> G{Go / No-Go}
-    G -->|Go| H[Launch]
-    G -->|No-Go| F
-    H --> I[Mission Operations]
-    I --> J[Mission Complete]
-    J --> K[Debrief & Report]
+<GraphvizDiagram code={`
+digraph mission_workflow {
+    rankdir=TB;
+    MissionProposal [shape=box];
+    ReviewBoard [shape=diamond];
+    PlanningPhase [shape=box];
+    Archive [shape=box];
+    VehicleAssignment [shape=box];
+    PreLaunchChecks [shape=box];
+    GoNoGo [shape=diamond];
+    Launch [shape=box];
+    MissionOperations [shape=box];
+    MissionComplete [shape=box];
+    DebriefReport [shape=box];
+
+    MissionProposal -> ReviewBoard;
+    ReviewBoard -> PlanningPhase [label="Approved"];
+    ReviewBoard -> Archive [label="Rejected"];
+    PlanningPhase -> VehicleAssignment;
+    VehicleAssignment -> PreLaunchChecks;
+    PreLaunchChecks -> GoNoGo;
+    GoNoGo -> Launch [label="Go"];
+    GoNoGo -> PreLaunchChecks [label="No-Go"];
+    Launch -> MissionOperations;
+    MissionOperations -> MissionComplete;
+    MissionComplete -> DebriefReport;
+}
 `} zoom={100} />
 
 </Section>
@@ -631,37 +645,41 @@ flowchart TD
 
 Top-level subsystem dependency graph for crewed vessels. Power feeds every other subsystem; Navigation drives Propulsion; Communications links to Ground Control.
 
-<Diagram code={`
-graph LR
-    Power -->|supplies| LifeSupport
-    Power -->|supplies| Navigation
-    Power -->|supplies| Communications
-    Power -->|supplies| Propulsion
-    Navigation -->|guides| Propulsion
-    Communications -->|relays to| GroundControl
-    LifeSupport -->|sustains| CrewModule
+<GraphvizDiagram code={`
+digraph subsystem_deps {
+    rankdir=LR;
+    Power -> LifeSupport [label="supplies"];
+    Power -> Navigation [label="supplies"];
+    Power -> Communications [label="supplies"];
+    Power -> Propulsion [label="supplies"];
+    Navigation -> Propulsion [label="guides"];
+    Communications -> GroundControl [label="relays to"];
+    LifeSupport -> CrewModule [label="sustains"];
+}
 `} />
 
 </Section>
 
 <Section id="sec-8-1-3" title="Launch Authorization Sequence">
 
-The message exchange between Mission Control, the Flight Director, the Launch Director, and the Vehicle during launch authorization.
+The message exchange between Mission Control, the Flight Director, the Launch Director, and the Vehicle during launch authorization (approximated as a directed graph).
 
-<Diagram code={`
-sequenceDiagram
-    participant MC as Mission Control
-    participant FD as Flight Director
-    participant LD as Launch Director
-    participant V as Vehicle
-
-    MC->>FD: Request go / no-go poll
-    FD->>MC: All stations nominal
-    MC->>LD: Authorize launch
-    LD->>V: Initiate countdown sequence
-    V-->>LD: Countdown nominal
-    LD->>MC: Launch commit confirmed
-    MC->>FD: Confirm trajectory tracking
+<GraphvizDiagram code={`
+digraph launch_auth {
+    rankdir=TB;
+    node [shape=box];
+    MC [label="Mission Control"];
+    FD [label="Flight Director"];
+    LD [label="Launch Director"];
+    V [label="Vehicle"];
+    MC -> FD [label="Request go / no-go poll"];
+    FD -> MC [label="All stations nominal"];
+    MC -> LD [label="Authorize launch"];
+    LD -> V [label="Initiate countdown"];
+    V -> LD [label="Countdown nominal"];
+    LD -> MC [label="Launch commit confirmed"];
+    MC -> FD [label="Confirm trajectory tracking"];
+}
 `} zoom={75} />
 
 </Section>
