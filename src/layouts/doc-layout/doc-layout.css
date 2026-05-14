@@ -410,20 +410,29 @@
   font-size: 0.9em;
 }
 
-/* Nested lists: indented with a left border line */
-.document ul ul {
+/* Nested unordered lists */
+.document ul ul,
+.document ol ul {
   margin-left: 1.25rem;
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
-  padding-left: 0.75rem;
-  border-left: 1px solid var(--doc-border);
 }
 
-/* Nested bullets: smaller and muted (border colour instead of accent) */
-.document ul ul li::before {
-  background: var(--doc-border);
-  width: 4px;
-  height: 4px;
+/* Nested bullets: same style as top-level */
+.document ul ul li::before,
+.document ol ul li::before {
+  content: '';
+  background: var(--doc-ink);
+  width: 5px;
+  height: 5px;
+  top: 0.6em;
+  border-radius: 50%;
+  font-weight: normal;
+}
+
+/* Prevent unordered items inside ordered lists from incrementing the counter */
+.document ol ul li {
+  counter-increment: none;
 }
 
 

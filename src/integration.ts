@@ -1,18 +1,11 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
-import type { DiagramThemeVars } from "./components/diagram/diagram-theme";
 import type { GraphvizThemeVars } from "./components/graphviz-diagram/graphviz-theme";
 
-export type { DiagramThemeVars, GraphvizThemeVars };
+export type { GraphvizThemeVars };
 
 export interface DocShellConfig {
-  diagram?: {
-    themeVars?: {
-      light?: Partial<DiagramThemeVars>;
-      dark?: Partial<DiagramThemeVars>;
-    };
-  };
   graphviz?: {
     themeVars?: {
       light?: Partial<GraphvizThemeVars>;
@@ -21,13 +14,10 @@ export interface DocShellConfig {
   };
 }
 
-const DIAGRAM_VIRTUAL_ID = "virtual:doc-shell/diagram-theme";
-const DIAGRAM_RESOLVED_ID = "\0virtual:doc-shell/diagram-theme";
 const GRAPHVIZ_VIRTUAL_ID = "virtual:doc-shell/graphviz-theme";
 const GRAPHVIZ_RESOLVED_ID = "\0virtual:doc-shell/graphviz-theme";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const diagramThemePath = resolve(here, "components/diagram/diagram-theme.ts");
 const graphvizThemePath = resolve(
   here,
   "components/graphviz-diagram/graphviz-theme.ts",
@@ -36,17 +26,6 @@ const graphvizThemePath = resolve(
 export default function docShell(
   config: DocShellConfig = {},
 ): AstroIntegration {
-  const lightOverrides = JSON.stringify(config.diagram?.themeVars?.light ?? {});
-  const darkOverrides = JSON.stringify(config.diagram?.themeVars?.dark ?? {});
-
-  const diagramSource = [
-    `import { DEFAULT_THEME_VARS } from ${JSON.stringify(diagramThemePath)};`,
-    `export const themeVars = {`,
-    `  light: { ...DEFAULT_THEME_VARS.light, ...${lightOverrides} },`,
-    `  dark:  { ...DEFAULT_THEME_VARS.dark,  ...${darkOverrides} },`,
-    `};`,
-  ].join("\n");
-
   const graphvizLightOverrides = JSON.stringify(
     config.graphviz?.themeVars?.light ?? {},
   );
@@ -72,11 +51,9 @@ export default function docShell(
               {
                 name: "doc-shell-virtual-config",
                 resolveId(id) {
-                  if (id === DIAGRAM_VIRTUAL_ID) return DIAGRAM_RESOLVED_ID;
                   if (id === GRAPHVIZ_VIRTUAL_ID) return GRAPHVIZ_RESOLVED_ID;
                 },
                 load(id) {
-                  if (id === DIAGRAM_RESOLVED_ID) return diagramSource;
                   if (id === GRAPHVIZ_RESOLVED_ID) return graphvizSource;
                 },
               },
