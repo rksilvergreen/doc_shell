@@ -32,11 +32,12 @@ import type { TocEntry } from "doc-shell/layouts/toc/toc.astro";
 interface Props {
   entry: any;
   components?: Record<string, any>;
+  composedToc?: TocEntry[];
 }
 
-const { entry, components = {} } = Astro.props;
+const { entry, components = {}, composedToc } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await entry.render();
-const tocEntries = (remarkPluginFrontmatter._toc ?? []) as TocEntry[];
+const tocEntries = composedToc ?? (remarkPluginFrontmatter._toc ?? []) as TocEntry[];
 
 const builtInComponents = {
   Section,
