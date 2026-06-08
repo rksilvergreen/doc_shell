@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "_PROJECT_NAME_/*": [
+      "project_name/*": [
         "src/*"
       ],
       "@components/*": [
