@@ -8,7 +8,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        _PROJECT_NAME_: fileURLToPath(new URL('./src', import.meta.url)),
+        project_name: fileURLToPath(new URL('./src', import.meta.url)),
         '@components': fileURLToPath(
           new URL('./src/components', import.meta.url),
         ),

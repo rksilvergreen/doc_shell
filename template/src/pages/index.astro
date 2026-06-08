@@ -3,7 +3,7 @@ import HomePage from "doc-shell/layouts/home-page/home-page.astro";
 import MainLayout from "doc-shell/layouts/main-layout/main-layout.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-const title = "_PROJECT_TITLE_";
+const title = "Project Title";
 const collection: CollectionEntry<"documents">[] = (
     await getCollection("documents")
 ).sort((a, b) => a.data.order - b.data.order);
