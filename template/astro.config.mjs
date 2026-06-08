@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import { fileURLToPath } from 'node:url';
 import { remarkSectionLevel } from 'doc-shell/plugins/remark-section-level';
+import docShell from 'doc-shell/integration';
 
 export default defineConfig({
   vite: {
